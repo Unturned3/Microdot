@@ -1,5 +1,16 @@
 # Setting up the build environment
---------------------------------------------------------------------------
+
+First, we need to create a few directories in /opt to store the all
+the files needed during the build. The "targetfs" directory stands for
+"target file system", and it will contain files that forms the bootable
+disk image. The "cross" directory contains our cross compilation toolchain
+that we will build in the next section. The "cross/src" directory contains
+all the source packages that we will be compiling. 
+
+> Note: the '#' symbol indicates that you should be typing the command
+> as the root user. On the other hand, the '$' symbol indicates that the
+> commands should be executed as a normal user (without any elevated 
+> privileges).
 
 ```bash
 # mkdir /opt/targetfs
