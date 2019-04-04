@@ -1,13 +1,13 @@
 # Setting up the build environment
 
-First, we need to create a few directories in /opt to store the all
-the files needed during the build. The "targetfs" directory stands for
+First, we need to create a few directories in `/opt` to store the all
+the files needed during the build. The `targetfs` directory stands for
 "target file system", and it will contain files that forms the bootable
-disk image. The "cross" directory contains our cross compilation toolchain
-that we will build in the next section. The "cross/src" directory contains
+disk image. The `cross` directory contains our cross compilation toolchain
+that we will build in the next section. The `cross/src` directory contains
 all the source packages that we will be compiling. 
 
-> Note: the '#' symbol indicates that you should be typing the command
+> Note: the `#` symbol indicates that you should be typing the command
 > as the root user. On the other hand, the '$' symbol indicates that the
 > commands should be executed as a normal user (without any elevated 
 > privileges).
@@ -18,9 +18,9 @@ all the source packages that we will be compiling.
 # mkdir /opt/cross/src
 ```
 
-set the "source_dir" variable to point to where
+set the `source_dir` variable to point to where
 all the tar archives are located, and copy all
-the archives into /opt/cross/src
+the archives into `/opt/cross/src`
 
 ```bash
 # source_dir=/path/to/sources
@@ -28,8 +28,7 @@ the archives into /opt/cross/src
 ```
 
 
-Create the builder user
---------------------------------------------------------------------------
+# Create the Builder User
 
 ```bash
 # groupadd builder
@@ -40,7 +39,6 @@ Create the builder user
 
 
 # Set up ~/.bash\_profile and ~/.bashrc
---------------------------------------------------------------------------
 
 $ cat > ~/.bash_profile << "EOF"
 	exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
@@ -72,9 +70,7 @@ EOF
 $ source ~/.bash_profile
 $ exit
 
-Change permission and ownership
---------------------------------------------------------------------------
-===============================
+# Change permission and ownership
 
 # chown builder:builder -R /opt/cross 
 # chown builder:builder -R /opt/targetfs
