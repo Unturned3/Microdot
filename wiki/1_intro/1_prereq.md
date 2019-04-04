@@ -10,6 +10,7 @@ you should be able to do basic operations like these:
 	* printing file contents
 	* deleting files
 	* creating files/directories
+	* using variables
 You also need to know how to edit files from the command line, using a
 text editor such as GNU Nano or Vi/Vim.
 
