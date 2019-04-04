@@ -1,7 +1,6 @@
 
 
 # Microdot Linux
---------------------------------------------------------------------------
 
 The Microdot Linux project will guide you through the process of
 creating a miniature but fully functional Linux system from the
@@ -12,7 +11,6 @@ can easily be added by compiling them from source, or by downloading
 them through an experimental package manager. 
 
 # Getting Started
---------------------------------------------------------------------------
 
 The Microdot Wiki is where all the tutorials and documentation are
 stored. Check out the Wiki to start building your own Microdot Linux!
@@ -22,7 +20,6 @@ about the Microdot project.
 
 
 # FAQ
---------------------------------------------------------------------------
 
 ### What does "Microdot" mean?
 
@@ -39,10 +36,11 @@ Initially, MicroLinux started out as a personal project to develop a
 tiny Linux system that uses as little disk space and RAM as possible
 (intended as a hypervisor guest). However, I faced some major challenges
 during the process:
-	* How do I make a cross compilation toolchain?
-	* How do I properly configure the Linux kernel?
-	* How can I compile a kernel with minimal bloat?
-	* What are the bare minimum components needed for a functional system?
+
+* How do I make a cross compilation toolchain?
+* How do I properly configure the Linux kernel?
+* How can I compile a kernel with minimal bloat?
+* What are the bare minimum components needed for a functional system?
 
 
 ### Who is the intended audience of the Microdot Project?
