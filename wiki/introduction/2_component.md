@@ -46,3 +46,6 @@ space. For the user interface, we will use the `ash` shell provided in
 `busybox`. Of course, for the kernel, we will use the Linux kernel (or
 else this project would be named something else, like Microdot Windows)
 
+In the next section, you will learn how these components work together
+to bring up a usable system when the computer powers on.
+
