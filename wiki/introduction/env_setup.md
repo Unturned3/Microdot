@@ -8,7 +8,7 @@ that we will build in the next section. The `cross/src` directory contains
 all the source packages that we will be compiling. 
 
 > Note: the `#` symbol indicates that you should be typing the command
-> as the root user. On the other hand, the '$' symbol indicates that the
+> as the root user. On the other hand, the `$` symbol indicates that the
 > commands should be executed as a normal user (without any elevated 
 > privileges).
 
@@ -18,17 +18,25 @@ all the source packages that we will be compiling.
 # mkdir /opt/cross/src
 ```
 
-set the `source_dir` variable to point to where
-all the tar archives are located, and copy all
-the archives into `/opt/cross/src`
-
-```bash
-# source_dir=/path/to/sources
-# cp $source_dir/* /opt/cross/src
-```
-
 
 # Create the Builder User
+
+Instead of using your own user account to build Microdot, we will create
+a dedicated user named `builder` to do this. First, your default user
+account will include a lot of environmental variables, and some of which
+can interfere with our build process. Adding a new user account enables
+us to eliminate dangerous/unused environmental variables. Also, you
+probably don't want your default user's home directory to be cluttered
+with a pile of temporary build files. 
+
+First, we add a group named `builder`, then we use `useradd` to actually
+create the new user. The `-s` option specifies the login shell that
+`builder` will be using. The `-g` option specifies the group that `builder`
+belongs to. The `-m` option tells `useradd` to create a home directory for
+the new user. The `-k` option specifies the `skeletal files` that will
+be copied to the new user's home directory. Here, we tell it to copy
+nothing by specifying `/dev/null`, otherwise it might pollute the new home
+directory. Lastly, we specify `builder` as the name of the new user.
 
 ```bash
 # groupadd builder
