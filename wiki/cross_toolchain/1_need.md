@@ -18,7 +18,18 @@ time a bootloader is supposed to be running. You can read more about the
 The binary executables produced by the compilers are _platform dependent_.
 That is, a binary file produced on one platform can't run on another
 different platform. For example, if you compile a piece of C code on a
-`x86-based PC`, then you can't run the resulting binary on a
-`ARM-based Raspberry Pi`, since these two platforms have an incompatible
-architecture, which means the instructions contained within the binaries
+`x86-based PC`, then you can't run the resulting binary on an
+`ARM-based Raspberry Pi`. Since these two platforms have an incompatible
+architecture, it means the instructions contained within the binaries
 can only work for one of these platforms at a time.
+
+We must compile our C source code on a Raspberry Pi if we want it to
+execute on it. However, the Raspberry Pi is slow compared to a powerful
+x86 PC. A build job can take hours on a Rpi whereas it would only take
+a few minutes on a PC. This is why _cross compilers_ are made. Like
+regular compilers, cross compilers also turn source code into binaries.
+Unlike regular compilers, cross compilers have the ability to generate
+binaries that contains instructions for a different CPU than the platform
+that it is currently on. This enables us to compile code on a fast PC, and
+then put the executables on a slower embedded device, which saves a lot
+of time.
