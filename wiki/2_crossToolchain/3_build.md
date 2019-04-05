@@ -96,7 +96,7 @@ cd build		# build binutils in this folder instead
 	--disable-werror \		# prevents warnings from stopping the build
 	--disable-nls		# disable internationalization
 
-make -j4
+make -jN
 make install	# install the compiled files
 ```
 * `--prefix`
@@ -124,14 +124,124 @@ make install	# install the compiled files
 	a target binary to a library located on the host system, such as
 	`/usr/lib`.
 
-* `make -j4`
+* `make -jN`
 
-	Replace "4" with the number of CPU cores that your system has. This
+	Replace N with the number of CPU cores that your system has. This
 	enables `make` to speed up the build job by working in parallel across
-	multipul CPU cores.
+	multipul CPU cores. For example, if you have a dual-core system, then
+	you would type `make -j2`.
 
 
 ### gcc (bootstrap compiler)
+
+At this stage, we do not have a functional C library yet, so a complete
+`gcc` cannot be built (as it relies on certain parts of the libc). Instead,
+we will build a minimum gcc compiler called the `bootstrap compiler`, and
+use it to build the libc headers, the `libgcc` support library, and the
+complete C library. This minimum compiler has no dependency on the libc.
+
+`gcc` does depend on a few external libraries to implement certain functions.
+These external libraries doesn't depend on anything else, so we can just
+build them directly with gcc here.
+
+First, we have to unpack the libraries _into_ the source directory of gcc:
+
+```bash
+
+tar -xf ../mpfr\*
+tar -xf ../mpc\*
+tar -xf ../gmp\*
+
+```
+
+Then we have to "clean up" the names by leaving just the letters and
+removing the version number. For example, we will rename `mpfr-4.0.1` as
+`mpfr`.
+
+```bash
+mv mpfr\* mpfr
+mv mpc\* mpc
+mv gmp\* gmp
+```
+
+`gcc` build system will automatically detect the presence of these
+directories and compile them before compiling `gcc` it self. Now, we
+will configure and build the bootstrap compiler. Again, we do this in a
+separate directory:
+
+```bash
+
+mkdir build
+cd build
+
+../configure \
+	--target=$target \
+	--prefix=$install \
+	--with-newlib \
+	--without-headers \
+	--with-sysroot=$sysroot \
+	--with-native-system-header-dir=/include \
+	--enable-shared \
+	--enable-languages=c,c++ \	# we only want a c/c++ compiler right now
+	--disable-nls \
+	--disable-decimal-float \
+	--disable-libgomp \
+	--disable-libmudflap \
+	--disable-libssp \
+	--disable-libatomic \
+	--disable-libquadmath \
+	--disable-libvtv \
+	--disable-libsanitizer \
+	--disable-libstdcxx \
+	--disable-threads \
+	--disable-multilib
+```
+
+* `--with-newlib`
+
+	Tells `gcc` to not rely on any C libraries
+
+* `--without-headers`
+
+	Tells `gcc` to not use any of the hosts existing header files
+
+
+* `--with-native-system-header-dir`
+
+	Tells `gcc` to look for headers in this directory. Note that
+	this directory is relative to the previously set `--with-sysroot`
+	option, so `/include` actually refers to `$sysroot/include`
+
+* `--enable-shared`
+
+	Tells `gcc` to build libraries as shared (aka. dynamic). This
+	affects the `libgcc` and `libstdc++` libraries later.
+
+* `--disable-xxxxxx`
+
+	Tells `gcc` to disable all these features. They are not needed
+	when building a bootstrap compiler, and it would waste a lot of
+	build time if we don't disable them.
+
+Compile & Install the bootstrap compiler:
+
+```bash
+make -jN all-gcc	# only build the gcc compiler, nothing else
+make install-gcc	# only install what we built
+```
+
+If you look under `$install/bin`, you would see that `gcc` and various
+other tools has been installed in there, all prefixed with our target
+architecture triplet, which is `x86_64-linux-musl`. If you were 
+to invoke `$target-gcc` and try to compile some C code, you would be
+greeted with a load of error messages saying that certain files are
+missing. This is because our bootstrap compiler has no access to any
+part of the C library, which makes it impossible to compile an executable
+program. However, this bootstrap compiler can compile _freestanding_ code,
+that is, code that does not use the C library at all. The Linux kernel is
+an example of _freestanding_ code. Yes, we can use this `gcc` to compile
+the kernel right now if we want to, but there's no point in doing it.
+
 
 ### musl-libc headers
 
