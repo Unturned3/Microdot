@@ -28,6 +28,13 @@ $ cd $install/src
 
 ### How to Work With Source Code Packages
 
+For every section below, you need to use the `tar` command to uncompress
+and untar the archives (such as `.tar.gz` or `.tar.xz`, etc). Then you
+need to change directory into the folder that's created by the untarred
+package. Instructions in these sections assume that you are starting in the
+untarred folder of a package. An example of how this is done is given in
+the _linux kernel headers_ section.
+
 ### linux kernel headers
 
 First, we will install the Linux kernel headers into the `$sysroot`
@@ -36,7 +43,9 @@ features are enabled and usable in the kernel's interface. The headers
 are needed by `busybox` because it implements a lot of its functions
 by utilizing the kernel's API. We have to install the headers first,
 because installing it later would cause it to remove vital files installed
-in the $sysroot by `musl-libc` and `gcc`.
+in the `$sysroot` by `musl-libc` and `gcc`.
+
+
 
 ### binutils
 
