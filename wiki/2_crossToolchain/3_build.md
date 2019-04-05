@@ -99,24 +99,24 @@ cd build		# build binutils in this folder instead
 make -j4
 make install	# install the compiled files
 ```
-* --prefix
+* `--prefix`
 
 	This option specifies the location of installation. In this case, we
 	want to install all the binutils to `$install`, which is `/opt/cross`
 
-* --target
+* `--target`
 
 	This option specifies the target architecture that binutils will
 	be built for.
 
-* --with-sysroot
+* `--with-sysroot`
 
 	This option specifies the location of the system root. This is where
 	all the header files, libraries, etc. for the target system are
 	contained. When linking binaries for the target, binutils tools will
 	look into this sysroot directory for header files, etc.
 
-* --with-lib-path
+* `--with-lib-path`
 
 	This option explicitly states the directory to find libraries in when
 	binutils tools are used. In this case, libraries will be installed
@@ -124,7 +124,7 @@ make install	# install the compiled files
 	a target binary to a library located on the host system, such as
 	`/usr/lib`.
 
-* make -j4
+* `make -j4`
 
 	Replace "4" with the number of CPU cores that your system has. This
 	enables `make` to speed up the build job by working in parallel across
