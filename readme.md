@@ -22,16 +22,35 @@ You can also visit the FAQ section to learn more about the Microdot project.
 
 ### Why did you build the Microdot project?
 
-Initially, MicroLinux started out as a personal project to develop a
-tiny Linux system that uses as little disk space and RAM as possible
-(intended as a hypervisor guest). However, I faced some major challenges
-during the process:
+I started building Microdot purely out of curiosity (and building a Linux
+system from scratch does seem like a popular pastime for people). However, 
+along the way, I encountered many problems, such as:
 
-* How do I make a cross compilation toolchain?
+* How do I properly make a cross compilation toolchain?
+* How can I replace glibc with musl-libc?
 * How do I properly configure the Linux kernel?
 * How can I compile a kernel with minimal bloat?
-* What are the bare minimum components needed for a functional system?
+* How can I make the a Linux system as small as possible?
 
+There is suprisingly little documentation or tutorials on the internet
+about these topics. For any information that I did manage to find, they
+hardly agreed with each other and were either incorrect or inconsistent.
+And some of them just expect you to blindly follow their insturctions
+and type commands without explaining why (and it doesn't work, I'm not
+suprised).
+
+"cross toolchain building" and "kernel configuration" were the nastiest
+out of all the problems I faced. There are literally thousands of
+switches and options that you can use to configure the packages, and
+misusing one could cause the toolchain to fail or render the kernel
+unbootable. I partially used trail-and-error to figure things out (believe
+me, applying trail-and-error that on a process that takes hours to finish
+every time is not a fun task to do), but luckily I got some help from
+[other people](thanks.md), which spared me from wasting more time.
+
+I learned _a lot_ in the end, and I thought it would be good for me to
+share my experience so other people wouldn't have to go through the same
+process and waste an awful lot of time.
 
 ### What does "Microdot" mean?
 
