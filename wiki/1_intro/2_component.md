@@ -37,7 +37,8 @@ following components:
 
 
 Since the point of Microdot Linux is to be _functional and compact_, we
-will hand-pick the vital components that we will include in the system.
+will hand-pick the vital components that we will include in the system
+and tailor it to our needs.
 For the bootloader, we will use `syslinux`, as it is easy to configure
 and has a tiny footprint. For the userspace, we will use the "Swiss Army
 Knife of Embedded Linux", aka. `busybox`. It combines roughly 300 common

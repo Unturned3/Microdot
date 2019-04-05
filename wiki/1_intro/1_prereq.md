@@ -46,10 +46,4 @@ these packages onto your host Linux system.
 * gawk (a text-processing language)
 
 
-# Think Twice Before Running a Command!
 
-Some of the commands used when building Microdot Linux are _potentially
-dangerous_ if used incorrectly. The documentation will warn you when you
-are about to execute such a command (formatting a virtual disk image,
-etc.). Make sure that you always fully read and understand the
-insturctions before running any commands. 

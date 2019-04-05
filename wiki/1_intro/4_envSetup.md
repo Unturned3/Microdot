@@ -7,15 +7,13 @@ disk image. The `cross` directory contains our cross compilation toolchain
 that we will build in the next section. The `cross/src` directory contains
 all the source packages that we will be compiling. 
 
-> Note: the `#` symbol indicates that you should be typing the command
-> as the root user. On the other hand, the `$` symbol indicates that the
-> commands should be executed as a normal user (without any elevated 
-> privileges).
+> Note: execute the following commands as the root user, since you (as a
+> normal user) wouldn't have write access to the `/opt` directory.
 
 ```bash
-# mkdir /opt/targetfs
-# mkdir /opt/cross
-# mkdir /opt/cross/src
+mkdir /opt/targetfs
+mkdir /opt/cross
+mkdir /opt/cross/src
 ```
 
 
@@ -52,57 +50,58 @@ convenient.
 > a new user is defeated.
 
 ```bash
-# groupadd builder
-# useradd -s /bin/bash -g builder -m -k /dev/null builder
-# passwd builder
-# su - builder
+groupadd builder
+useradd -s /bin/bash -g builder -m -k /dev/null builder
+passwd builder
+su - builder
 ```
 
 
 # Setup the Initialization Scripts for `Builder`
 
 ```bash
-$ cat > ~/.bash_profile << "EOF"
+cat > ~/.bash_profile << "EOF"
 	exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
 EOF
 ```
 
 ```bash
-$ cat > ~/.bashrc << "EOF"
+cat > ~/.bashrc << "EOF"
 
-set +h
-umask 022
+	set +h
+	umask 022
 
-alias ls="ls --color=auto"
-alias grep="grep --color=auto"
+	alias ls="ls --color=auto"
+	alias grep="grep --color=auto"
 
-host=x86_64-cross-linux-gnu
-target=x86_64-linux-musl
-arch=x86
+	host=x86_64-cross-linux-gnu
+	target=x86_64-linux-musl
+	arch=x86
 
-export host target arch
-unset CFLAGS
+	export host target arch
+	unset CFLAGS
 
-install=/opt/cross
-sysroot=/opt/cross/$target
-targetfs=/opt/targetfs
-LC_ALL=POSIX
-PATH=$install/bin:/bin:/usr/bin
+	install=/opt/cross
+	sysroot=/opt/cross/$target
+	targetfs=/opt/targetfs
+	LC_ALL=POSIX
+	PATH=$install/bin:/bin:/usr/bin
 
-export install sysroot targetfs LC_ALL PATH
+	export install sysroot targetfs LC_ALL PATH
 
 EOF
 ```
 
 ```bash
-$ source ~/.bash_profile
-$ exit
+source ~/.bash_profile
+exit
 ```
 
 # Change permission and ownership
 
+> Note: run the following commands as the root user
 ```bash
-# chown builder:builder -R /opt/cross 
-# chown builder:builder -R /opt/targetfs
-# chmod 755 -R /opt/cross
+chown builder:builder -R /opt/cross 
+chown builder:builder -R /opt/targetfs
+chmod 755 -R /opt/cross
 ```
