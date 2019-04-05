@@ -1,6 +1,5 @@
 
 # Skill Requirements
---------------------------------------------------------------------------
 
 Building a Linux system from the ground up is not an easy task, and
 it requires familiarity with the Linux command line. As a minimum,
@@ -22,7 +21,6 @@ Useful websites to learn about the Linux command line:
 * linux-tutorial.info
 
 # Host System Requirements
---------------------------------------------------------------------------
 
 You need to have a working Linux environment (Ideally a mainstream
 distribution such as Debian or Arch) on your machine. It can either be
@@ -49,10 +47,9 @@ these packages onto your host Linux system.
 
 
 # Think Twice Before Running a Command!
---------------------------------------------------------------------------
 
-Some of the commands used when building Microdot Linux are potentially
-dangerous if used incorrectly. The documentation will warn you when you
+Some of the commands used when building Microdot Linux are _potentially
+dangerous_ if used incorrectly. The documentation will warn you when you
 are about to execute such a command (formatting a virtual disk image,
 etc.). Make sure that you always fully read and understand the
 insturctions before running any commands. 

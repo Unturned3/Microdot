@@ -14,21 +14,11 @@ them through an experimental package manager.
 
 The Microdot Wiki is where all the tutorials and documentation are
 stored. Check out the Wiki to start building your own Microdot Linux!
-
-You can also visit the FAQ section to learn more
-about the Microdot project.
+You can also visit the FAQ section to learn more about the Microdot project.
 
 
 # FAQ
 
-### What does "Microdot" mean?
-
-Microdots are a steganographic technique that involves
-photographically shrinking a large chunk of text to the
-size of a typographical dot, such as a period. This term
-is used here to figuratively show the fact that Microdot
-Linux compresses a lot of functionality into a tiny
-amount of space.
 
 ### Why did you build the Microdot project?
 
@@ -41,6 +31,16 @@ during the process:
 * How do I properly configure the Linux kernel?
 * How can I compile a kernel with minimal bloat?
 * What are the bare minimum components needed for a functional system?
+
+
+### What does "Microdot" mean?
+
+Microdots are a steganographic technique that involves
+photographically shrinking a large chunk of text to the
+size of a typographical dot, such as a period. This term
+is used here to figuratively show the fact that Microdot
+Linux compresses a lot of functionality into a tiny
+amount of space.
 
 
 ### Who is the intended audience of the Microdot Project?
