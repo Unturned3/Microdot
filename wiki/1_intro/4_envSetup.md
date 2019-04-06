@@ -1,5 +1,7 @@
 # Setting up the build environment
 
+In this section, we will prepare our host system for building Microdot
+Linux.
 First, we need to create a few directories in `/opt` to store the all
 the files needed during the build. The `targetfs` directory stands for
 "target file system", and it will contain files that forms the bootable
