@@ -11,14 +11,27 @@ you should be able to do basic operations like these:
 * deleting files
 * creating files/directories
 * using variables
+* editing files using a CLI text editor
 
-You also need to know how to edit files from the command line, using a
-text editor such as GNU Nano or Vi/Vim.
+A lot of jargon is used throughout the documentation. If there are terms or
+concepts that you don't know about, please consult Google and make sure
+that understand them before moving on, or else you might get stuck later
+because you missed something out previously.
+
+Many people on the internet has already explained certain important
+concepts that we will be working with; So instead of reinventing the wheel
+and rewriting what others have wrote, I will put links to them in the
+documentation.
+
+If you feel like that something isn't explained clearly enough in the docs,
+feel free to 
+[open up a new Issue on GitHub](github.com/Unturned3/Microdot/issues) 
+and tell me about it there.
 
 Useful websites to learn about the Linux command line:
-* linuxcommand.org
-* ryanstutorial.net/linuxtutorial
-* linux-tutorial.info
+* [linuxcommand.org](linuxcommand.org)
+* [ryanstutorial.net/linuxtutorial](ryanstutorial.net/linuxtutorial)
+* [linux-tutorial.info](linux-tutorial.info)
 
 # Host System Requirements
 
@@ -27,7 +40,9 @@ distribution such as Debian or Arch) on your machine. It can either be
 installed directly onto the computer's hard disk or inside a virtual
 machine. VMs are comparatively easier to set up, but the downside is
 that the guest operating system won't have access to all the CPU power
-on the computer, so it might take longer when compiling software.
+on the computer, so it might take longer when compiling software. If you
+do not have a working Linux system yet, just visit Google and you can
+find plenty of good tutorials out there about how to set up a VM.
 
 I used a Debian 9 system installed in a VM to build Microdot Linux, because
 I didn't bother to do a hard drive install and mess with the Apple boot
