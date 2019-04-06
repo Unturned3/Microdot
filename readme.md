@@ -71,22 +71,38 @@ However, besides that, the Microdot Project also provides
 useful information on cross compilation, which could be useful
 outside the scope of Linux system building.
 
-### What's the difference between the Microdot Project and others?
+### What's the difference between the Microdot and other projects?
 
-Tiny Core Linux: does an exellent job making a tiny Linux distro,
-but isn't primarily focused on teaching people _how_ to make one
+Here are some projects that has some similar aspects to Microdot:
 
-Linux From Scratch: teaches people how to manually assemble
-a working Linux system, but the resulting system is still quite
-big (200+ MB). Does not teach you anything about how to
-properly configure a suitable kernel. Complicated process
-of constructing a cross toolchain.
+* Tiny Core Linux
 
-Microdot Project: focuses on how to make a very small but
-useful Linux system. Includes sufficient information on
-important aspects such as toolchain construction and kernel
-configuration. Also has a package manager, so its more
-like a complete distro. 
+	Does an exellent job making a complete & tiny Linux distro,
+	but isn't primarily focused on teaching people _how_ to make one.
+
+* Linux From Scratch
+
+	Teaches people how to manually assemble a working Linux system, but
+	uses _a lot_ of packages, employs a complicated process, and makes a
+	big system(200+ MB). Doesn't offer any details about how to configure
+	a kernel. However, it is quite extendable, as it uses a lot of packages
+	to construct a wide platform that you can transform into other things.
+
+* Minimal Linux Live
+
+	Has a concise and fully automated build process, explains a lot
+	about the boot process and system internals, and the resulting system
+	is quite small (around 8MB). However, it doesn't use a customized
+	toolchain (makes the end system bigger), and it doesn't explain how
+	to configure a kernel. This makes it somewhat difficult for the
+	system to be extended and molded for other purposes.
+
+### What's wrong with articles/tutorials on the internet?
+
+Most of them are outdated, inconsistent, and perplexing. Having that said,
+there are still some good ones out there, and I will put links to these
+in the documentation whenever appropriate.
+
 
 ### What can Microdot Linux be used for?
 
