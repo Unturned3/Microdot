@@ -83,8 +83,9 @@ on our host machine, but generates code for the target architecture. Even
 though our host and targets are the same architecture, this is done to
 isolate the target against possible contaminations from the host system.
 
-```bash
+> Unpack and change directory into the binutils-2.30 package
 
+```bash
 mkdir build		# create a folder named "build" inside the source folder
 cd build		# build binutils in this folder instead
 
@@ -140,11 +141,12 @@ we will build a minimum gcc compiler called the `bootstrap compiler`, and
 use it to build the libc headers, the `libgcc` support library, and the
 complete C library. This minimum compiler has no dependency on the libc.
 
+> Unpack and change directory into the gcc-7.3.0 package
+
 `gcc` does depend on a few external libraries to implement certain functions.
 These external libraries doesn't depend on anything else, so we can just
-build them directly with gcc here.
-
-First, we have to unpack the libraries _into_ the source directory of gcc:
+build them directly with gcc here. We will unpack the libraries into the
+source folder of `gcc`:
 
 ```bash
 
@@ -215,7 +217,8 @@ cd build
 * `--enable-shared`
 
 	Tells `gcc` to build libraries as shared (aka. dynamic). This
-	affects the `libgcc` and `libstdc++` libraries later.
+	affects the `libgcc` and `libstdc++` libraries later, and makes
+	it possible to dynamically link to them.
 
 * `--disable-xxxxxx`
 
@@ -236,14 +239,53 @@ architecture triplet, which is `x86_64-linux-musl`. If you were
 to invoke `$target-gcc` and try to compile some C code, you would be
 greeted with a load of error messages saying that certain files are
 missing. This is because our bootstrap compiler has no access to any
-part of the C library, which makes it impossible to compile an executable
-program. However, this bootstrap compiler can compile _freestanding_ code,
+part of the C library, which makes it impossible to compile a runnable
+binary. However, this bootstrap compiler can compile _freestanding_ code,
 that is, code that does not use the C library at all. The Linux kernel is
 an example of _freestanding_ code. Yes, we can use this `gcc` to compile
 the kernel right now if we want to, but there's no point in doing it.
 
 
 ### musl-libc headers
+
+In this step we will install the header files provided by `musl-libc`. The
+headers are needed for us to build our compiler support library (`libgcc`)
+in the next step. We will tell the build system of `musl-libc` to use our
+previously made bootstrap compiler instead of the one on our host system.
+
+> Unpack and change directory into the musl-1.1.10 package
+
+```bash
+./configure \
+	CROSS_COMPILE=$target- \
+	--prefix=/ \
+	--target=$target
+```
+
+* `CROSS_COMPILE=$target-`
+
+	We use this variable to specify the `cross compiler prefix` that the
+	build system will use. So instead of invoking just `gcc`, it will
+	prepend the prefix that we provided, so `gcc` turns into `$target-gcc`,
+	which is `x86_64-linux-musl-gcc` in this case. This allows the build
+	system to use our bootstrap compiler.
+
+* `--prefix=/`
+
+	The `prefix` option in `musl-libc` doesn't seem to be able to control
+	the installation location. So we set it to `/` here, and rectify it
+	later via the `DESTDIR` variable during the installation step.
+
+Compile and install the `musl-libc` headers:
+
+```bash
+make -jN DESTDIR=$sysroot install-headers
+```
+
+Now, if you look into `$sysroot/include`, you should see all the familiar
+C header files like `stdio.h` and `stdlib.h`, and so on. These headers
+will be used when building `libgcc` and other binaries later on.
+
 
 ### static libgcc
 
