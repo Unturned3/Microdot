@@ -289,6 +289,12 @@ will be used when building `libgcc` and other binaries later on.
 
 ### static libgcc
 
+`libgcc` is a low-level compiler support library and it is used by all
+dynamic binaries produced by `gcc`. It contains "support code" that
+implements certain features, such as 64-bit division, etc. Building the
+complete `musl-libc` in the next step requires the presence of `libgcc`,
+so we build it here.
+
 ### complete musl-libc
 
 ### complete gcc
