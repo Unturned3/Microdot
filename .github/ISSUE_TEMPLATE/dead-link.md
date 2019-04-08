@@ -2,7 +2,7 @@
 name: Dead Link
 about: Report a dead link in the Microdot documentation
 title: ''
-labels: ''
+labels: dead link
 assignees: ''
 
 ---
