@@ -10,20 +10,43 @@ risk of our host system contaminating the binaries that will be used
 in Microdot Linux.
 
 
+
 ### Environment Setup
 
+First, we need to substitute our identity as the `builder` user. This
+allows us to work in a clean environment with access to the variables
+that we previously defined in the initialization scripts.
+
+Note that if you exit the shell that you're working in or shut down your
+system during the middle of the build process, you need to run the
+substitute user command again before resuming from where you left off.
+
 ```bash
-$ su - builder
+su - builder
+```
 
-$ mkdir -pv $sysroot
-$ mkdir -pv $install/lib
-$ mkdir -pv $sysroot/lib
+Then, we will setup a few directories and links in the cross compiler
+building area for convenience purposes. The `$sysroot` folder contains
+an imagined root file system for our target, and it will contain target-
+specific files, such as its C library. The `lib` folder contains the
+various libraries and support files that our tools will be using. We then
+point `lib64` to `lib`, because sometimes the build system of a package
+will install its contents into the `lib64` folder when we are building
+on a 64 bit system. We want to keep all the files in `lib` so we link them.
+We also point `$sysroot/usr` to `.` because we don't want anything to be
+installed into a separate `usr` directory.
 
-$ ln -sfv $install/lib $install/lib64
-$ ln -sfv $sysroot/lib $sysroot/lib64
-$ ln -sfv . $sysroot/usr
+```bash
 
-$ cd $install/src 
+mkdir -pv $sysroot
+mkdir -pv $install/lib
+mkdir -pv $sysroot/lib
+
+ln -sfv $install/lib $install/lib64
+ln -sfv $sysroot/lib $sysroot/lib64
+ln -sfv . $sysroot/usr
+
+cd $install/src		# go to the directory containing all the packages
 ```
 
 ### How to Work With Source Code Packages
@@ -291,12 +314,166 @@ will be used when building `libgcc` and other binaries later on.
 
 `libgcc` is a low-level compiler support library and it is used by all
 dynamic binaries produced by `gcc`. It contains "support code" that
-implements certain features, such as 64-bit division, etc. Building the
-complete `musl-libc` in the next step requires the presence of `libgcc`,
-so we build it here.
+implements certain features, such as 64-bit division, etc. `musl-libc`
+requires `libgcc`, so we will build a static one here in order to construct
+`musl-libc` in the next step.
+
+> Change directory into the previously unpacked `gcc` folder. `libgcc` is a
+> part of the `gcc` package.
+
+```bash
+cd build
+make -jN MAKE="make enable_shared=no" all-target-libgcc
+make -jN MAKE="make enable_shared=no" install-target-libgcc
+```
+
+* `MAKE="make enable_shared=no"`
+
+	The `make` command will recursively pass the `MAKE` variable to itself
+	when it builds certain subtasks required by a target. We pass the
+	`enable_shared=no` flag here to make sure only a static `libgcc` is
+	built.
+
+* `all-target-libgcc`
+
+	This tells `make` to only build `libgcc` and nothing else.
+
 
 ### complete musl-libc
 
+Now we are ready to build the final C library.
+
+> Change directory into the previously unpacked `musl` folder.
+
+```bash
+make -jN \
+	CC=$target-gcc \
+	LIBCC=$install/lib/gcc/$target/*/libgcc.a \
+	DESTDIR=$sysroot \
+	all
+
+make DESTDIR=$sysroot install
+```
+
+* `CC=$target-gcc`
+
+	This tells the build system of `musl-libc` to use `$target-gcc` as the
+	compiler when compiling the source code.
+
+* `LIBCC=...`
+
+	This tells the build system of `musl-libc` where is the static libgcc
+	located.
+
+After running `make install`, you should see files such as `libc.so` inside
+the `$sysroot/lib` directory. `libc.so` is our `musl` C library (.so stands
+for "shared object", aka. a dynamic library). Binaries built using our cross
+compiler toolchain will be linked to this library instead of our host's
+`glibc` (GNU C library).
+
 ### complete gcc
 
+Now we can build the final `gcc` compiler with less `--disable-xxx` flags,
+along with the final dynamic `libgcc` and the C++ standard library,
+`libstdcxx`. First, delete the previously extracted `gcc-7.3.0` directory.
+
+```bash
+rm -rf $install/src/gcc-7.3.0	# be careful not to mistype anything
+```
+
+Then, extract the `gcc` source with `tar -xf` as before, change directory
+into it, and extract the three dependency libraries:
+
+```bash
+tar -xf ../mpfr\*
+tar -xf ../mpc\*
+tar -xf ../gmp\*
+
+mv mpfr\* mpfr
+mv mpc\* mpc
+mv gmp\* gmp
+```
+
+Configure & build gcc:
+
+```bash
+mkdir build
+cd build
+
+../configure \
+	--prefix=$install \
+	--build=$host --host=$host --target=$target \
+	--enable-languages=c,c++ --enable-c99 --enable-long-long \
+	--enable-shared --without-newlib \
+	--disable-libmudflap --disable-multilib --disable-libsanitizer \
+	--disable-bootstrap --disable-nls --with-sysroot=$sysroot
+
+make -jN all-gcc all-target-libgcc all-target-libstdc++-v3
+make install-gcc install-target-libgcc install-target-libstdc++-v3
+```
+
+* `--build=xxx, --host=xxx, --target=xxx`
+
+	This three flags specifies the architecture of the machine that `gcc`
+	is being _built_ on, the machine that `gcc` will _run_ on, and the
+	machine that `gcc` will _generate code for_, respectively. We are both
+	building and running `gcc` on `x86_64-cross-linux-gnu`, and we want
+	`gcc` to generate code for `x86_64-linux-musl`, as that is the
+	architecture of Microdot Linux.
+
+* `all-target-libstdc++-v3`
+
+	This tells `make` to build the C++ standard library as well.
+
+After installing everything, you should find `$target-gcc` and `$target-g++`
+and a few other tools installed inside `$install/bin`, and the C++ standard
+library & headers installed in `$sysroot`. Now we can use this complete
+toolchain to compile binaries for Microdot.
+
 ### testing the cross compiler
+
+Instead of using `gcc` (which calls the gcc installed on the
+host system), we will invoke `$target-gcc`, which translates
+to `x86_64-linux-musl-gcc`. This is our cross compiler installed
+in the $install/bin directory.
+
+First, write a simple C program in builder's home directory:
+(we want to keep the cross toolchain directory clean)
+
+```bash
+cd ~
+cat > test.c << "EOF"
+
+#include <stdio.h>
+int main()
+{
+	printf("Hello, world!\n");
+	return 0;
+}
+
+EOF
+```
+
+Then, invoke "$target-gcc" to compile this C program. The "-o test" option
+tells gcc to name the output executable as "test". The "--static" option
+tells gcc to statically link the executable (aka. copy the musl-libc
+contents into the final executable file). If we compile the binary
+dynamically, it will be linked to `musl-libc`. However, `musl-libc` is only
+present inside the `$sysroot/lib` and not installed to the host systems
+`/lib` directory. So if we were to run this program, then it wouldn't be
+able to find `musl-libc`.
+
+```bash
+$target-gcc test.c -o test --static
+```
+
+Now run the program, and you should see "Hello, world!" on the screen.
+
+./test
+
+### You Made It!
+
+Congratulations! This is what I consider to be the hardest and most
+agitating part of the build process. In the next section, we will utilize
+this toolchain to add software to our Microdot system. Then after that,
+we will go on to configure our first Linux kernel.
