@@ -435,7 +435,7 @@ toolchain to compile binaries for Microdot.
 Instead of using `gcc` (which calls the gcc installed on the
 host system), we will invoke `$target-gcc`, which translates
 to `x86_64-linux-musl-gcc`. This is our cross compiler installed
-in the $install/bin directory.
+in the `$install/bin` directory.
 
 First, write a simple C program in builder's home directory:
 (we want to keep the cross toolchain directory clean)
