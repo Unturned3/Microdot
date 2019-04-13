@@ -89,7 +89,7 @@ specified package, change directory into it, and go on from there. Do
 not delete the source folder after finishing a section, because it might
 be needed later.
 
-### binutils
+## binutils
 
 The binutils package contains the linker, assembler, and a few other tools
 to manipulate binary files. When you invoke `gcc` to compile C code,
@@ -98,8 +98,8 @@ This is why binutils is built first, as `gcc` needs it in order to compile
 code, _and_ both `gcc` and `musl-libc` performs several tests on the
 binutils tools and determine what features to enable/disable.
 
-The binutils built in this step will be installed in $install/bin and the
-tool's name will all be prefixed with the target arch triplet
+The binutils built in this step will be installed in `$install/bin` and the
+tool's name will all be prefixed with the target architecture triplet
 (`x86_64-linux-musl` in this case). This set of binutils tools will be used
 by `gcc` in the finished cross toolchain later, as it is configured to run
 on our host machine, but generates code for the target architecture. Even
@@ -156,7 +156,7 @@ make install	# install the compiled files
 	you would type `make -j2`.
 
 
-### gcc (bootstrap compiler)
+## gcc (bootstrap compiler)
 
 At this stage, we do not have a functional C library yet, so a complete
 `gcc` cannot be built (as it relies on certain parts of the libc). Instead,
@@ -269,7 +269,7 @@ an example of _freestanding_ code. Yes, we can use this `gcc` to compile
 the kernel right now if we want to, but there's no point in doing it.
 
 
-### musl-libc headers
+## musl-libc headers
 
 In this step we will install the header files provided by `musl-libc`. The
 headers are needed for us to build our compiler support library (`libgcc`)
@@ -310,7 +310,7 @@ C header files like `stdio.h` and `stdlib.h`, and so on. These headers
 will be used when building `libgcc` and other binaries later on.
 
 
-### static libgcc
+## Static libgcc
 
 `libgcc` is a low-level compiler support library and it is used by all
 dynamic binaries produced by `gcc`. It contains "support code" that
@@ -339,7 +339,7 @@ make -jN MAKE="make enable_shared=no" install-target-libgcc
 	This tells `make` to only build `libgcc` and nothing else.
 
 
-### complete musl-libc
+## Complete musl-libc
 
 Now we are ready to build the final C library.
 
@@ -371,7 +371,7 @@ for "shared object", aka. a dynamic library). Binaries built using our cross
 compiler toolchain will be linked to this library instead of our host's
 `glibc` (GNU C library).
 
-### complete gcc
+## Complete gcc
 
 Now we can build the final `gcc` compiler with less `--disable-xxx` flags,
 along with the final dynamic `libgcc` and the C++ standard library,
@@ -430,7 +430,7 @@ and a few other tools installed inside `$install/bin`, and the C++ standard
 library & headers installed in `$sysroot`. Now we can use this complete
 toolchain to compile binaries for Microdot.
 
-### testing the cross compiler
+## Testing the Cross Compiler
 
 Instead of using `gcc` (which calls the gcc installed on the
 host system), we will invoke `$target-gcc`, which translates
@@ -454,8 +454,8 @@ int main()
 EOF
 ```
 
-Then, invoke "$target-gcc" to compile this C program. The "-o test" option
-tells gcc to name the output executable as "test". The "--static" option
+Then, invoke `$target-gcc` to compile this C program. The `-o test` option
+tells gcc to name the output executable as `test`. The `--static` option
 tells gcc to statically link the executable (aka. copy the musl-libc
 contents into the final executable file). If we compile the binary
 dynamically, it will be linked to `musl-libc`. However, `musl-libc` is only
@@ -467,11 +467,14 @@ able to find `musl-libc`.
 $target-gcc test.c -o test --static
 ```
 
-Now run the program, and you should see "Hello, world!" on the screen.
+Now run the program, and you should see `Hello, world!` on the screen.
 
+```bash
 ./test
+```
 
-### You Made It!
+
+## You Made It!
 
 Congratulations! This is what I consider to be the hardest and most
 agitating part of the build process. In the next section, we will utilize
