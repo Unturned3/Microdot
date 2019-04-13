@@ -49,7 +49,7 @@ ln -sfv . $sysroot/usr
 cd $install/src		# go to the directory containing all the packages
 ```
 
-### How to Work With Source Code Packages
+## How to Work With Source Code Packages
 
 For every section below, you need to use the `tar` command to uncompress
 and untar the archives (such as `.tar.gz` or `.tar.xz`, etc). Then you
@@ -58,7 +58,7 @@ package. Instructions in these sections assume that you are starting in the
 untarred folder of a package. An example of how this is done is given in
 the _linux kernel headers_ section.
 
-### linux kernel headers
+## Linux Kernel Headers
 
 First, we will install the Linux kernel headers into the `$sysroot`
 directory. The kernel headers can allow an application to know what
