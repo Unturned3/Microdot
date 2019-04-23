@@ -4,20 +4,22 @@
 Before proceeding onto installing software using our cross toolchain, we will
 first create the skeleton of our Microdot system. That is, we need to create
 a few important directories that will be populated later. We will name these
-folders according to the established convention. For more details regarding the
-Linux directory structures, check out the following links:
+folders according to the established convention. The skeleton will be built in
+the `$targetfs` directory. The contents of this folder will later be copied
+onto a bootable disk image.
 
-* [https://www.a.com](a)
-* [https://www.b.com](b)
-* [https://www.c.com](c)
+For more details regarding the Linux directory structures, check out the
+following links:
 
-The skeleton will be built in the `$targetfs` directory. The contents of this
-folder will later be copied onto a bootable disk image.
+* [a](https://www.a.com)
+* [b](https://www.b.com)
+* [d](https://www.c.com)
+
 
 ```bash
 # essential directories
 mkdir -p $targetfs/{bin,sbin,dev,etc,proc,sys}
-mkdir -p $targetfs/{mnt,opt,root,home,usr/{lib,bin,sbin}}
+mkdir -p $targetfs/{mnt,opt,home,usr/{lib,bin,sbin}}
 mkdir -p $targetfs/var/{lib,spool,lock,cache,log,run}
 
 # link all "lib" and "lib64" folders to "usr/lib"
@@ -31,7 +33,7 @@ install -dm 1777 $targetfs/tmp
 install -dm 1777 $targetfs/var/tmp
 ```
 
-Now we will create a few important files that controls how the system runs:
+Now we will create a few important files:
 
 ```bash
 ln -sfv ../proc/mounts $targetfs/etc/mtab
@@ -43,6 +45,10 @@ EOF
 cat > $targetfs/etc/group << "EOF"
 root:x:0:
 bin:x:1:
+EOF
+
+cat > ${CLFS}/targetfs/etc/fstab << "EOF"
+# file-system  mount-point  type  options  dump  fsck
 EOF
 
 touch $targetfs/var/log/lastlog
