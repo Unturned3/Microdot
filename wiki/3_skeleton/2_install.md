@@ -76,8 +76,8 @@ results in an even smaller binary compared to other libraries.
 
 ```bash
 make distclean
-make ARCH=$target defconfig
-make ARCH=$target CROSS_COMPILE=$target- CONFIG_PREFIX=$targetfs install
+make ARCH=$arch defconfig
+make -jN ARCH=$arch CROSS_COMPILE=$target- CONFIG_PREFIX=$targetfs install
 ```
 
 
