@@ -9,7 +9,16 @@ cannot rely on anything in the host environment. Doing so eliminates the
 risk of our host system contaminating the binaries that will be used
 in Microdot Linux.
 
+The process that we use to build our cross compiler is adapted from the
+[musl-cross-make](https://github.com/richfelker/musl-cross-make) script by
+richfelker. Without his help I would
+have wasted a lot more time doing trail-and-error by myself. For more
+information, check out the [thanks](/readme.md) page.
 
+Unlike other build procedure on the internet (such as Linux from Scratch, or
+crosstool-ng), the one that we will use only builds `gcc` once instead of twice
+or even three times in some cases. The result is a drastically simpler process,
+and it is a lot less time consuming.
 
 ## Environment Setup
 
