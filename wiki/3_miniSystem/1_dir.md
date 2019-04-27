@@ -1,56 +1,71 @@
 
-# Creating Files & Directories
+# Constructing the Skeleton
 
 Before proceeding onto installing software using our cross toolchain, we will
 first create the skeleton of our Microdot system. That is, we need to create
-a few important directories that will be populated later. We will name these
+a few important directories and files, and we'll name these
 folders according to the established convention. The skeleton will be built in
 the `$targetfs` directory. The contents of this folder will later be copied
 onto a bootable disk image.
 
-For more details regarding the Linux directory structures, check out the
-following links:
+The directory structure that we will construct here is a greatly simplified
+version of the one specified by the Filesystem Hierarchy Standard, with a bunch
+of folders omitted. For more details regarding the Linux directory structures,
+check out the following links:
 
-* [a](https://www.a.com)
-* [b](https://www.b.com)
-* [d](https://www.c.com)
+* [PUT LINK HERE](https://www.a.com)
+* [PUT LINK HERE](https://www.b.com)
 
+# Important Directories
 
 ```bash
 # essential directories
 mkdir -p $targetfs/{bin,sbin,dev,etc,proc,sys}
-mkdir -p $targetfs/{mnt,opt,home,usr/{lib,bin,sbin}}
-mkdir -p $targetfs/var/{lib,spool,lock,cache,log,run}
-
-# link all "lib" and "lib64" folders to "usr/lib"
-ln -sfv $targetfs/usr/lib $targetfs/lib
-ln -sfv $targetfs/usr/lib $targetfs/lib64
-ln -sfv $targetfs/usr/lib $targetfs/usr/lib64
+mkdir -p $targetfs/var/{lock,log}
 
 # Create these directories with special permissions
 install -dm 0750 $targetfs/root
 install -dm 1777 $targetfs/tmp
 install -dm 1777 $targetfs/var/tmp
+
+# link "lib64" to "lib" so all libraries can be installed neatly in one place
+ln -sfv $targetfs/lib $targetfs/lib64
 ```
 
-Now we will create a few important files:
+# Important Files
 
+`/etc/mtab` is a file that shows a list of mounted file systems, and
+`/proc/mounts` contains exactly that information, so we symlink these two
+together.
 ```bash
 ln -sfv ../proc/mounts $targetfs/etc/mtab
+```
 
+The `/etc/passwd` file is a text-based database of information about users, such
+as their user name, user/group ID number, login shell, and so on. For now, we
+only need the root user in here. For more information about `/etc/passwd`,
+please visit [this](www.c.com) link.
+
+```bash
 cat > $targetfs/etc/passwd << "EOF"
 root::0:0:root:/root:/bin/ash
 EOF
+```
 
+`/etc/group` is another text-based database of information about the groups
+present on the system. For now, we only have the root group.
+
+```bash
 cat > $targetfs/etc/group << "EOF"
 root:x:0:
-bin:x:1:
 EOF
+```
 
-cat > ${CLFS}/targetfs/etc/fstab << "EOF"
-# file-system  mount-point  type  options  dump  fsck
-EOF
+The `/var/log/lastlog` file is used by programs like `init` or `login` to record
+information about users that logged into the system. These programs won't write
+to the `lastlog` file if it doesn't exist, so we create them here.
 
+```bash
 touch $targetfs/var/log/lastlog
 chmod -v 664 $targetfs/var/log/lastlog
 ```
