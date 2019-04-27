@@ -12,8 +12,9 @@ in Microdot Linux.
 The process that we use to build our cross compiler is adapted from the
 [musl-cross-make](https://github.com/richfelker/musl-cross-make) script by
 richfelker. Without his help I would
-have wasted a lot more time doing trail-and-error by myself. For more
-information, check out the [thanks](/readme.md) page.
+have wasted a lot more time doing trail-and-error by myself and Microdot
+probably won't even exist. For more information, check out the
+[thanks](/readme.md) page.
 
 Unlike other build procedure on the internet (such as Linux from Scratch, or
 crosstool-ng), the one that we will use only builds `gcc` once instead of twice
@@ -428,7 +429,6 @@ Now run the program, and you should see `Hello, world!` on the screen.
 ```bash
 ./test
 ```
-
 
 ## You Made It!
 
