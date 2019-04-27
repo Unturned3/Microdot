@@ -14,7 +14,8 @@ make ARCH=$arch CROSS_COMPILE=$target- nconfig
 Now you should be seeing a text based configuration interface. You can navigate
 around using the arrow keys, ESC key, and return key. Every indentation in the
 recipe means that you need to enter a sub-menu to access the options. "Y" means
-that you need to select the corresponding option ("N" means deselect).
+that you need to select the corresponding option ("N" means deselect). Again,
+a hashtag ("#") indicates a comment.
 
 ```
 
@@ -22,6 +23,7 @@ that you need to select the corresponding option ("N" means deselect).
 
 General Setup
 	Default hostname: Microdot
+
 	Initial RAM filesystem and RAM disk (initramfs/initrd) support: Y
 		Support initial ramdisk/ramfs compressed using bzip2: N
 		Support initial ramdisk/ramfs compressed using LZMA: N
@@ -32,10 +34,9 @@ General Setup
 	Configure standard kernel features (expert users)
 		Multiple users, groups and capabilities support: Y
 		Posix Clocks & timers: Y
+
+		# printk() is what the kernel uses to print messages onto the screen
 		Enable support for printk: Y
-		Enable signalfd() system call: Y
-		Enable timerfd() system call: Y
-		Enable eventfd() system call: Y
 
 Executable file formats / Emulations
 	Kernel support for ELF binaries: Y
