@@ -11,7 +11,7 @@ in Microdot Linux.
 
 
 
-### Environment Setup
+## Environment Setup
 
 First, we need to substitute our identity as the `builder` user. This
 allows us to work in a clean environment with access to the variables
@@ -156,13 +156,7 @@ make install	# install the compiled files
 	you would type `make -j2`.
 
 
-## gcc (bootstrap compiler)
-
-At this stage, we do not have a functional C library yet, so a complete
-`gcc` cannot be built (as it relies on certain parts of the libc). Instead,
-we will build a minimum gcc compiler called the `bootstrap compiler`, and
-use it to build the libc headers, the `libgcc` support library, and the
-complete C library. This minimum compiler has no dependency on the libc.
+## gcc compiler
 
 > Unpack and change directory into the gcc-7.3.0 package
 
@@ -172,11 +166,9 @@ build them directly with gcc here. We will unpack the libraries into the
 source folder of `gcc`:
 
 ```bash
-
 tar -xf ../mpfr\*
 tar -xf ../mpc\*
 tar -xf ../gmp\*
-
 ```
 
 Then we have to "clean up" the names by leaving just the letters and
@@ -200,36 +192,32 @@ mkdir build
 cd build
 
 ../configure \
+	--build=$host \
+	--host=$host \
 	--target=$target \
 	--prefix=$install \
-	--with-newlib \
-	--without-headers \
 	--with-sysroot=$sysroot \
 	--with-native-system-header-dir=/include \
 	--enable-shared \
-	--enable-languages=c,c++ \	# we only want a c/c++ compiler right now
+	--enable-tls \
+	--enable-languages=c,c++ \
+	--enable-c99 \
+	--enable-long-long \
 	--disable-nls \
-	--disable-decimal-float \
-	--disable-libgomp \
 	--disable-libmudflap \
-	--disable-libssp \
-	--disable-libatomic \
-	--disable-libquadmath \
-	--disable-libvtv \
+	--disable-libmpx \
 	--disable-libsanitizer \
-	--disable-libstdcxx \
-	--disable-threads \
 	--disable-multilib
 ```
 
-* `--with-newlib`
+* `--build=xxx, --host=xxx, --target=xxx`
 
-	Tells `gcc` to not rely on any C libraries
-
-* `--without-headers`
-
-	Tells `gcc` to not use any of the hosts existing header files
-
+	This three flags specifies the architecture of the machine that `gcc`
+	is being _built_ on, the machine that `gcc` will _run_ on, and the
+	machine that `gcc` will _generate code for_, respectively. We are both
+	building and running `gcc` on `x86_64-cross-linux-gnu`, and we want
+	`gcc` to generate code for `x86_64-linux-musl`, as that is the
+	architecture of Microdot Linux.
 
 * `--with-native-system-header-dir`
 
@@ -243,13 +231,16 @@ cd build
 	affects the `libgcc` and `libstdc++` libraries later, and makes
 	it possible to dynamically link to them.
 
-* `--disable-xxxxxx`
+* `--disable-nls`
 
-	Tells `gcc` to disable all these features. They are not needed
-	when building a bootstrap compiler, and it would waste a lot of
-	build time if we don't disable them.
+	We do not need native language support
 
-Compile & Install the bootstrap compiler:
+* `--disable-libmudflap, --disable-libmpx, --disable-libsanitizer
+--disable-multilib`
+
+	These features are either broken or won't work with `musl-libc`
+
+Install the compiler:
 
 ```bash
 make -jN all-gcc	# only build the gcc compiler, nothing else
@@ -261,12 +252,11 @@ other tools has been installed in there, all prefixed with our target
 architecture triplet, which is `x86_64-linux-musl`. If you were 
 to invoke `$target-gcc` and try to compile some C code, you would be
 greeted with a load of error messages saying that certain files are
-missing. This is because our bootstrap compiler has no access to any
+missing. This is because our current compiler has no access to any
 part of the C library, which makes it impossible to compile a runnable
-binary. However, this bootstrap compiler can compile _freestanding_ code,
+binary. However, this compiler can compile _freestanding_ code,
 that is, code that does not use the C library at all. The Linux kernel is
-an example of _freestanding_ code. Yes, we can use this `gcc` to compile
-the kernel right now if we want to, but there's no point in doing it.
+an example of _freestanding_ code. 
 
 
 ## musl-libc headers
@@ -348,7 +338,7 @@ Now we are ready to build the final C library.
 ```bash
 make -jN \
 	CC=$target-gcc \
-	LIBCC=$install/lib/gcc/$target/*/libgcc.a \
+	LIBCC=$install/lib/gcc/$target/7.3.0/libgcc.a \
 	DESTDIR=$sysroot \
 	all
 
@@ -371,59 +361,15 @@ for "shared object", aka. a dynamic library). Binaries built using our cross
 compiler toolchain will be linked to this library instead of our host's
 `glibc` (GNU C library).
 
-## Complete gcc
+## Other gcc components
 
-Now we can build the final `gcc` compiler with less `--disable-xxx` flags,
-along with the final dynamic `libgcc` and the C++ standard library,
-`libstdcxx`. First, delete the previously extracted `gcc-7.3.0` directory.
+> Change directory into the previously unpacked gcc-7.3.0 folder
 
 ```bash
-rm -rf $install/src/gcc-7.3.0	# be careful not to mistype anything
-```
-
-Then, extract the `gcc` source with `tar -xf` as before, change directory
-into it, and extract the three dependency libraries:
-
-```bash
-tar -xf ../mpfr\*
-tar -xf ../mpc\*
-tar -xf ../gmp\*
-
-mv mpfr\* mpfr
-mv mpc\* mpc
-mv gmp\* gmp
-```
-
-Configure & build gcc:
-
-```bash
-mkdir build
 cd build
-
-../configure \
-	--prefix=$install \
-	--build=$host --host=$host --target=$target \
-	--enable-languages=c,c++ --enable-c99 --enable-long-long \
-	--enable-shared --without-newlib \
-	--disable-libmudflap --disable-multilib --disable-libsanitizer \
-	--disable-bootstrap --disable-nls --with-sysroot=$sysroot
-
-make -jN all-gcc all-target-libgcc all-target-libstdc++-v3
-make install-gcc install-target-libgcc install-target-libstdc++-v3
+make -jN all
+make install
 ```
-
-* `--build=xxx, --host=xxx, --target=xxx`
-
-	This three flags specifies the architecture of the machine that `gcc`
-	is being _built_ on, the machine that `gcc` will _run_ on, and the
-	machine that `gcc` will _generate code for_, respectively. We are both
-	building and running `gcc` on `x86_64-cross-linux-gnu`, and we want
-	`gcc` to generate code for `x86_64-linux-musl`, as that is the
-	architecture of Microdot Linux.
-
-* `all-target-libstdc++-v3`
-
-	This tells `make` to build the C++ standard library as well.
 
 After installing everything, you should find `$target-gcc` and `$target-g++`
 and a few other tools installed inside `$install/bin`, and the C++ standard
@@ -439,6 +385,7 @@ in the `$install/bin` directory.
 
 First, write a simple C program in builder's home directory:
 (we want to keep the cross toolchain directory clean)
+
 
 ```bash
 cd ~
