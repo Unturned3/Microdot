@@ -20,7 +20,8 @@ check out the following links:
 
 ```bash
 # essential directories
-mkdir -p $targetfs/{bin,sbin,dev,etc,proc,sys}
+mkdir -p $targetfs/{bin,sbin,dev,proc,sys}
+mkdir -p $targetfs/etc/init.d
 mkdir -p $targetfs/var/{lock,log}
 
 # Create these directories with special permissions
@@ -32,7 +33,7 @@ install -dm 1777 $targetfs/var/tmp
 ln -sfv $targetfs/lib $targetfs/lib64
 ```
 
-# Important Files
+# Configuration & Log Files
 
 `/etc/mtab` is a file that shows a list of mounted file systems, and
 `/proc/mounts` contains exactly that information, so we symlink these two
@@ -69,3 +70,41 @@ to the `lastlog` file if it doesn't exist, so we create them here.
 touch $targetfs/var/log/lastlog
 chmod -v 664 $targetfs/var/log/lastlog
 ```
+
+# System Initialization Scripts
+
+```bash
+cat > $targetfs/etc/inittab << "EOF"
+
+::sysinit:/etc/init.d/startup
+::askfirst:-/bin/sh
+
+::ctrlaltdel:/sbin/reboot
+
+::shutdown:/bin/umount -a -r
+::restart:/sbin/init
+
+
+# ::respawn:/sbin/getty -L ttyS0 9600 vt100
+
+EOF
+```
+
+```bash
+cat > $targetfs/etc/init.d/startup << "EOF"
+#!/bin/sh
+
+# mount pseudo file systems
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+
+# print some messages
+echo Boot took $(cut -d' ' -f1 /proc/uptime) seconds.
+echo Welcome to Microdot Linux!
+
+EOF
+
+chmod +x $targetfs/etc/init.d/startup
+```
+
