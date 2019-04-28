@@ -5,7 +5,7 @@ somewhat useless. It has no support for any peripheral devices such as keyboard,
 screen, storage, or network, and its only means of interacting with the outside
 world is via a serial connection. However, it is still a "complete" system, in
 the sense that it has a kernel, an init system, and a decent userspace, so it
-suffices for the job.
+suffices for the job of demonstrating various part's internal workings and functionality.
 
 This bare-minimum Linux system will be ran inside an emulated environment using
 the Quick Emulator (QEMU) because:
