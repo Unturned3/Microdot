@@ -85,9 +85,6 @@ cat > $targetfs/etc/inittab << "EOF"
 ::shutdown:/bin/umount -a -r
 ::restart:/sbin/init
 
-
-
-
 EOF
 ```
 
