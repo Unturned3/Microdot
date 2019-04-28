@@ -12,7 +12,7 @@ them through an experimental package manager.
 
 # Getting Started
 
-The Microdot Wiki is where all the tutorials and documentation are
+The Microdot [wiki](wiki) is where all the tutorials and documentation are
 stored. Check out the Wiki to start building your own Microdot Linux!
 You can also visit the FAQ section to learn more about the Microdot project.
 
