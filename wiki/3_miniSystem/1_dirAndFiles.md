@@ -20,7 +20,7 @@ check out the following links:
 
 ```bash
 # essential directories
-mkdir -p $targetfs/{bin,sbin,dev,proc,sys}
+mkdir -p $targetfs/{bin,sbin,dev,proc,sys,lib}
 mkdir -p $targetfs/etc/init.d
 mkdir -p $targetfs/var/{lock,log}
 
@@ -77,15 +77,13 @@ chmod -v 664 $targetfs/var/log/lastlog
 cat > $targetfs/etc/inittab << "EOF"
 
 ::sysinit:/etc/init.d/startup
-::askfirst:-/bin/sh
+::respawn:/sbin/getty -L ttyS0 9600 vt100
+# ::askfirst:-/bin/sh
 
 ::ctrlaltdel:/sbin/reboot
 
 ::shutdown:/bin/umount -a -r
 ::restart:/sbin/init
-
-
-# ::respawn:/sbin/getty -L ttyS0 9600 vt100
 
 EOF
 ```
