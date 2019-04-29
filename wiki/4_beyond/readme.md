@@ -1,6 +1,6 @@
 # Content Overview
 
-> Note: this section will expand as I and other users add more tutorials
+> Note: this section will expand as I and other users add more tutorials.
 > For now, it only has a skeleton of what could be included in the future
 
 ### Kernel
