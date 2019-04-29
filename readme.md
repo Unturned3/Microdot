@@ -48,28 +48,9 @@ me, applying trail-and-error that on a process that takes hours to finish
 every time is not a fun task to do), but luckily I got some help from
 [other people](thanks.md), which spared me from wasting more time.
 
-I learned _a lot_ in the end, and I thought it would be good for me to
+I learned a lot in the end, and I thought it would be good for me to
 share my experience so other people wouldn't have to go through the same
 process and waste an awful lot of time.
-
-### What does "Microdot" mean?
-
-Microdots are a steganographic technique that involves
-photographically shrinking a large chunk of text to the
-size of a typographical dot, such as a period. This term
-is used here to figuratively show the fact that Microdot
-Linux compresses a lot of functionality into a tiny
-amount of space.
-
-
-### Who is the intended audience of the Microdot Project?
-
-The Microdot Project is primarily intended for people who
-is interested in constructing a custom Linux system (it seems
-like that this is quite a popular activity for Linux users).
-However, besides that, the Microdot Project also provides
-useful information on cross compilation, which could be useful
-outside the scope of Linux system building.
 
 ### What's the difference between the Microdot and other projects?
 
@@ -102,6 +83,26 @@ Here are some projects that has some similar aspects to Microdot:
 Most of them are outdated, inconsistent, and perplexing. Having that said,
 there are still some good ones out there, and I will put links to these
 in the documentation whenever appropriate.
+
+
+### What does "Microdot" mean?
+
+Microdots are a steganographic technique that involves
+photographically shrinking a large chunk of text to the
+size of a typographical dot, such as a period. This term
+is used here to figuratively show the fact that Microdot
+Linux compresses a lot of functionality into a tiny
+amount of space.
+
+
+### Who is the intended audience of the Microdot Project?
+
+The Microdot Project is primarily intended for people who
+is interested in constructing a custom Linux system (it seems
+like that this is quite a popular activity for Linux users).
+However, besides that, the Microdot Project also provides
+useful information on cross compilation, which could be useful
+outside the scope of Linux system building.
 
 
 ### What can Microdot Linux be used for?
