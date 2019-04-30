@@ -1,5 +1,24 @@
 # Configuring a Minimal Kernel
 
+The Linux kernel is made out of many subsystems and it supports a lot of
+different hardware platforms. If we never manually configure it and
+leave it to use the defaults, then a lot of unneeded subsystems and code
+will be added to the final product. How much space does this waste?
+An unmodified default configuration will generate a 8 to 10 megabyte kernel
+image. On the other hand, a nicely tuned manual config will keep the image
+under 2MB with plenty of functionality included.
+
+Configuring the kernel basically boils down to selecting code that supports the
+various hardware devices that you want to use, and including features that will
+benefit userspace programs. For example, you might want to select the relevant
+drivers for your onboard ethernet card, or for a hard drive, etc. Please read
+[this](https://wiki.gentoo.org/wiki/Kernel/Gentoo_Kernel_Configuration_Guide)
+Gentoo Wiki page in order to consolidate your understanding of the various
+concepts involved. It might have some Gentoo-specific terminologies that
+we won't use here.
+
+> Change directory into the unpacked linux-4.18.5 folder
+
 ```bash
 # clean up the source directory
 make distclean
@@ -11,14 +30,59 @@ make ARCH=$arch CROSS_COMPILE=$target- tinyconfig
 make ARCH=$arch CROSS_COMPILE=$target- nconfig
 ```
 
-Now you should be seeing a text based configuration interface. You can navigate
+Now you should be seeing a text based configuration interface, with entries
+similar to the following (hashtags are comments)
+
+```text
+64-bit kernel                                                                                │
+
+# configure various kernel features
+General setup
+
+# should the kernel use any loadable modules?
+Enable loadable module support
+
+# include code to handle block devices? (hard disk, etc.)
+Enable the block layer
+
+# configure features related to CPUs
+Processor type and features
+
+# power management features
+Power management and ACPI options
+
+# system bus features
+Bus options (PCI etc.)
+
+Executable file formats / Emulations
+
+# networking subsystem
+Networking support
+
+# support code for different hardware devices
+Device Drivers
+
+Firmware Drivers
+
+# file system support (ext4, FAT, etc.)
+File systems
+
+Kernel hacking
+Security options
+Cryptographic
+Virtualization
+Library routines
+```
+
+
+
+You can navigate
 around using the arrow keys, ESC key, and return key. Every indentation in the
 recipe means that you need to enter a sub-menu to access the options. "Y" means
 that you need to select the corresponding option ("N" means deselect). Again,
 a hashtag ("#") indicates a comment.
 
 ```
-
 64-bit kernel: Y
 
 General Setup
