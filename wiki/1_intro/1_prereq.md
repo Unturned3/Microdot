@@ -29,9 +29,9 @@ feel free to
 and tell me about it there.
 
 Useful websites to learn about the Linux command line:
-* [linuxcommand.org](linuxcommand.org)
-* [ryanstutorial.net/linuxtutorial](ryanstutorial.net/linuxtutorial)
-* [linux-tutorial.info](linux-tutorial.info)
+* [linuxcommand.org](http://linuxcommand.org)
+* [ryanstutorial.net/linuxtutorial](https://ryanstutorial.net/linuxtutorial)
+* [linux-tutorial.info](https://linux-tutorial.info)
 
 # Host System Requirements
 
