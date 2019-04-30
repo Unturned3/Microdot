@@ -30,8 +30,8 @@ and tell me about it there.
 
 Useful websites to learn about the Linux command line:
 * [linuxcommand.org](http://linuxcommand.org)
-* [ryanstutorial.net/linuxtutorial](https://ryanstutorial.net/linuxtutorial)
-* [linux-tutorial.info](https://linux-tutorial.info)
+* [ryanstutorials.net/linuxtutorial](https://ryanstutorials.net/linuxtutorial)
+* [linux-tutorial.info](http://linux-tutorial.info)
 
 # Host System Requirements
 
