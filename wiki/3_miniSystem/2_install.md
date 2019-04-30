@@ -31,7 +31,7 @@ mkdir build
 cd build
 
 ../configure \
-	--prefix=$targetfs/usr \
+	--prefix=$targetfs \
 	--host=$target \
 	--target=$target \
 	--disable-multilib \
@@ -65,7 +65,7 @@ run.
 	--target=$target
 
 make -j4
-make DESTDIR=$targetfs/usr install-libs
+make DESTDIR=$targetfs install-libs
 ```
 
 # busybox
@@ -77,8 +77,13 @@ results in an even smaller binary compared to other libraries.
 ```bash
 make distclean
 make ARCH=$arch defconfig
+
+# configure busybox to not use the /usr directory
+make ARCH=$arch menuconfig
+
 make -jN ARCH=$arch CROSS_COMPILE=$target- CONFIG_PREFIX=$targetfs install
 ```
+
 
 
 
