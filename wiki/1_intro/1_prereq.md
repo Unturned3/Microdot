@@ -15,7 +15,7 @@ you should be able to do basic operations like these:
 
 A lot of jargon is used throughout the documentation. If there are terms or
 concepts that you don't know about, please consult Google and make sure
-that understand them before moving on, or else you might get stuck later
+that you understand them before moving on, or else you might get stuck later
 because you missed something out previously.
 
 Many people on the internet has already explained certain important
