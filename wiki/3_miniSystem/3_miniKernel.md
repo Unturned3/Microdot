@@ -34,7 +34,7 @@ Now you should be seeing a text based configuration interface, with entries
 similar to the following (hashtags are comments)
 
 ```text
-64-bit kernel                                                                                │
+64-bit kernel
 
 # configure various kernel features
 General setup
@@ -82,7 +82,11 @@ recipe means that you need to enter a sub-menu to access the options. "Y" means
 that you need to select the corresponding option ("N" means deselect). Again,
 a hashtag ("#") indicates a comment.
 
-```
+Configure the kernel according to the following recipe. As we said, this section
+focuses on constructing a bare minimum system, and you should notice that we
+didn't really include support for any real hardware.
+
+```text
 64-bit kernel: Y
 
 General Setup
@@ -127,7 +131,7 @@ File systems
 
 ```
 
-Save, exit, and compile the kernel. The finished image should be around 750kB.
+Save, exit, and compile the kernel. The finished image should be around 700kB.
 If we used `make defconfig` instead of `make tinyconfig` and hand-tuning the
 kernel, we would end up with a 8MB image, which contains a plethora of bloat
 that we'll never use. `make defconfig` is what most tutorials out there on the
