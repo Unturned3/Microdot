@@ -5,10 +5,15 @@
 The Microdot Linux project will guide you through the process of
 creating a miniature but fully functional Linux system from the
 ground up, with special emphasis on toolchain creation and kernel
-configuration. By default, Microdot Linux only contains a minimum
-environment (kernel, busybox, and musl-libc), however other programs
-can easily be added by compiling them from source, or by downloading
-them through an experimental package manager. 
+configuration. The root file system (kernel + busybox + musl-libc) takes
+up only 1.5MB of space inside a compressed tarball, and it is bootable
+using Quick Emulator. You can tune the kernel to support more hardware
+and extend the functionality of the base system.
+
+More software can be added to Microdot by compiling them from source. An
+experimental package manager named `Tiny Package Manager` is currently being
+developed. For more information, visit the [tpkg](https://www.google.com)
+github repo.
 
 # Getting Started
 
