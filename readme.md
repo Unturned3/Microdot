@@ -15,6 +15,19 @@ experimental package manager named `Tiny Package Manager` is currently being
 developed. For more information, visit the [tpkg](https://www.google.com)
 github repo.
 
+
+# Tutorial Overview
+
+- Section 1: prerequisites, background information, and build environment setup
+- Section 2: constructs a musl-based cross compilation toolchain
+- Section 3: builds a minimum Linux system composed of a tiny kernel and an
+	initramfs archive.
+- Section 4: tutorials for more specific topics, such as kernel fine tuning,
+	porting Microdot to other architectures, installing other programs, etc.
+	This section will probably contain a lot of work contributed by other users.
+	For more details, see the `readme.md` file inside `wiki/4_beyond`.
+
+
 # Getting Started
 
 The Microdot [wiki](wiki) is where all the tutorials and documentation are
