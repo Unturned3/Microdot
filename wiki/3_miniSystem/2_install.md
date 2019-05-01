@@ -78,9 +78,25 @@ results in an even smaller binary compared to other libraries.
 make distclean
 make ARCH=$arch defconfig
 
-# configure busybox to not use the /usr directory
-make ARCH=$arch menuconfig
+```
 
+Now, run the following command to launch the "menuconfig" interface. We need to
+configure busybox to install everything to `/bin` and `/sbin`, and ignore `/usr`.
+
+```bash
+make ARCH=$arch menuconfig
+```
+
+You should now see a text-based configuration interface. You can use the arrow keys,
+enter key, spacebar, and ESC key to navigate. Select the following option:
+```
+Settings --->
+	[*] Don't use /usr
+```
+
+Save and exit the configuration interface. Now compile & install busybox:
+
+```bash
 make -jN ARCH=$arch CROSS_COMPILE=$target- CONFIG_PREFIX=$targetfs install
 ```
 
