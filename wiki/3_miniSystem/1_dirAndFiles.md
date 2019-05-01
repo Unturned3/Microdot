@@ -20,14 +20,15 @@ check out the following links:
 
 ```bash
 # essential directories
+# note that we are not using the /usr directory
 mkdir -p $targetfs/{bin,sbin,dev,proc,sys,lib}
 mkdir -p $targetfs/etc/init.d
 mkdir -p $targetfs/var/{lock,log}
 
 # Create these directories with special permissions
-install -dm 0750 $targetfs/root
-install -dm 1777 $targetfs/tmp
-install -dm 1777 $targetfs/var/tmp
+install -dm 0750 $targetfs/root   # 0750: rwxr-x---
+install -dm 1777 $targetfs/tmp    # 1777: rwxrwxrwx, with sticky bit set
+install -dm 1777 $targetfs/var/tmp    # same as above
 
 # link "lib64" to "lib" so all libraries can be installed neatly in one place
 ln -sfv $targetfs/lib $targetfs/lib64
@@ -45,7 +46,7 @@ ln -sfv ../proc/mounts $targetfs/etc/mtab
 The `/etc/passwd` file is a text-based database of information about users, such
 as their user name, user/group ID number, login shell, and so on. For now, we
 only need the root user in here. For more information about `/etc/passwd`,
-please visit [this](www.c.com) link.
+please visit [this](www.c.com)(DEADLINK: FIXME) link.
 
 ```bash
 cat > $targetfs/etc/passwd << "EOF"
@@ -73,20 +74,31 @@ chmod -v 664 $targetfs/var/log/lastlog
 
 # System Initialization Scripts
 
+We will use `busybox init` as our init system. When the kernel passes control
+to `/sbin/init`, it will read `/etc/inittab` and carry out actions specified in
+there. The `inittab` file format for busybox init is a bit different from the
+traditional Sys V Init system. For more information, check out 
+[this](https://git.busybox.net/busybox/tree/examples/inittab) page from
+`busybox.net`.
+
 ```bash
 cat > $targetfs/etc/inittab << "EOF"
 
-::sysinit:/etc/init.d/startup
-::respawn:/sbin/getty -L ttyS0 9600 vt100
+::sysinit:/etc/init.d/startup   # execute a script that we will write ourselves
+::respawn:/sbin/getty -L ttyS0 9600 vt100   # start a terminal on ttyS0 (serial line)
 # ::askfirst:-/bin/sh
 
-::ctrlaltdel:/sbin/reboot
+::ctrlaltdel:/sbin/reboot   # what do do when the ctrl-alt-del keys are pressed
 
-::shutdown:/bin/umount -a -r
-::restart:/sbin/init
+::shutdown:/bin/umount -a -r  # what to do during shutdown
+::restart:/sbin/init  # what to do during restart
 
 EOF
 ```
+
+This is the custom "startup" script that `busybox init` will run when the system starts.
+The script performs a few tasks that's vital for the operation of the system, such as mounting
+the virtual file systems, and printing some messages.
 
 ```bash
 cat > $targetfs/etc/init.d/startup << "EOF"
@@ -105,4 +117,6 @@ EOF
 
 chmod +x $targetfs/etc/init.d/startup
 ```
+
+With the skeleton finished, we can now populate it with some software.
 
