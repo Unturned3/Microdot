@@ -100,8 +100,18 @@ Save and exit the configuration interface. Now compile & install busybox:
 make -jN ARCH=$arch CROSS_COMPILE=$target- CONFIG_PREFIX=$targetfs install
 ```
 
+Lastly, we have to "setuid" the busybox exectuable. Normally, when a binary
+is run, its privileges are the same as the user who started it. However, if
+a binary has the setuid bit set, it will execute with the privilege
+of the user who owns it. In our case, `root` owns the busybox binary. We need
+to set the "setuid" bit of busybox or else commands like `passwd` won't work.
+Busybox drops the elevated privileges for most other applets, so this isn't a
+security risk.
 
-
+```bash
+chmod 4755 $targetfs/bin/busybox	# the leading '4' is the setuid bit
+chown root:root -R $targetfs	# everything should be owned by root
+```
 
 
 
