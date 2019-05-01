@@ -12,5 +12,6 @@ never see the light of day. Here's a short list of people who I want to thank:
 	many other members from [linuxquestions.org](https://www.linuxquestions.org)
 	, who answered a lot of my questions
 
-* people from the [busybox mailing list](lists.busybox.net/pipermail/busybox)
+* people from the
+	[busybox mailing list](http://lists.busybox.net/pipermail/busybox)
 
