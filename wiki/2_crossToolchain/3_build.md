@@ -14,7 +14,7 @@ The process that we use to build our cross compiler is adapted from the
 richfelker. Without his help I would
 have wasted a lot more time doing trail-and-error by myself and Microdot
 probably won't even exist. For more information, check out the
-[thanks](/readme.md) page.
+[thanks](/thanks.md) page.
 
 Unlike other build procedure on the internet (such as Linux from Scratch, or
 crosstool-ng), the one that we will use only builds `gcc` once instead of twice
@@ -75,8 +75,8 @@ directory. The kernel headers can allow an application to know what
 features are enabled and usable in the kernel's interface. The headers
 are needed by `busybox` because it implements a lot of its functions
 by utilizing the kernel's API. We have to install the headers first,
-because installing it later would cause it to remove vital files installed
-in the `$sysroot` by `musl-libc` and `gcc`.
+because installing it later would cause it to overwrite other files installed
+in the same location by `gcc`.
 
 ```bash
 tar -xf linux-4.18.5.tar.gz		# uncompress & untar the package
@@ -105,7 +105,7 @@ The binutils package contains the linker, assembler, and a few other tools
 to manipulate binary files. When you invoke `gcc` to compile C code,
 `gcc` actually uses tools from `binutils` to assemble the final binary.
 This is why binutils is built first, as `gcc` needs it in order to compile
-code, _and_ both `gcc` and `musl-libc` performs several tests on the
+code, and both `gcc` and `musl-libc` performs several tests on the
 binutils tools and determine what features to enable/disable.
 
 The binutils built in this step will be installed in `$install/bin` and the
@@ -133,6 +133,7 @@ cd build		# build binutils in this folder instead
 make -jN
 make install	# install the compiled files
 ```
+
 * `--prefix`
 
 	This option specifies the location of installation. In this case, we
@@ -168,9 +169,12 @@ make install	# install the compiled files
 
 ## gcc compiler
 
+The `gcc-7.3.0` package contains the C/C++ compiler, the `libgcc` compiler
+support library, the C++ standard library, and a few others.
+
 > Unpack and change directory into the gcc-7.3.0 package
 
-`gcc` does depend on a few external libraries to implement certain functions.
+`gcc` depends on a few external libraries to implement certain functions.
 These external libraries doesn't depend on anything else, so we can just
 build them directly with gcc here. We will unpack the libraries into the
 source folder of `gcc`:
@@ -197,7 +201,6 @@ will configure and build the bootstrap compiler. Again, we do this in a
 separate directory:
 
 ```bash
-
 mkdir build
 cd build
 
