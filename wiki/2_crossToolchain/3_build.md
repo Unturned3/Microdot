@@ -180,9 +180,9 @@ build them directly with gcc here. We will unpack the libraries into the
 source folder of `gcc`:
 
 ```bash
-tar -xf ../mpfr\*
-tar -xf ../mpc\*
-tar -xf ../gmp\*
+tar -xf ../mpfr*
+tar -xf ../mpc*
+tar -xf ../gmp*
 ```
 
 Then we have to "clean up" the names by leaving just the letters and
@@ -190,9 +190,9 @@ removing the version number. For example, we will rename `mpfr-4.0.1` as
 `mpfr`.
 
 ```bash
-mv mpfr\* mpfr
-mv mpc\* mpc
-mv gmp\* gmp
+mv mpfr* mpfr
+mv mpc* mpc
+mv gmp* gmp
 ```
 
 `gcc` build system will automatically detect the presence of these
