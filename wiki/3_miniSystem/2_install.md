@@ -110,7 +110,14 @@ security risk.
 
 ```bash
 chmod 4755 $targetfs/bin/busybox	# the leading '4' is the setuid bit
-chown root:root -R $targetfs	# everything should be owned by root
+```
+
+You have to change the ownership of the `busybox` binary to root. However,
+you can only do that if you have root privileges.
+
+```bash
+su	# login as root uesr
+chown root:root -R /opt/targetfs
 ```
 
 
