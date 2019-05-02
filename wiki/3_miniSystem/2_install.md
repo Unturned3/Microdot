@@ -118,6 +118,7 @@ you can only do that if you have root privileges.
 ```bash
 su	# login as root uesr
 chown root:root -R /opt/targetfs
+exit
 ```
 
 
