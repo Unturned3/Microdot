@@ -88,10 +88,17 @@ make ARCH=$arch menuconfig
 ```
 
 You should now see a text-based configuration interface. You can use the arrow keys,
-enter key, spacebar, and ESC key to navigate. Select the following option:
+enter key, spacebar, and ESC key to navigate. "Y" means to select the option, and "N"
+means to deselect it. We aren't using the `/usr` directory for the sake of simplicity,
+and we are disabling `linuxrc` because it is a feature designed to provide
+compatibility for the `initrd` (initial ram disk) mechanism. Initramfs is preferred
+over initrd in our case.
+
 ```
 Settings --->
-	[*] Don't use /usr
+	Don't use /usr: Y
+Init Utilities --->
+	linuxrc: support running init from initrd (not initramfs): N
 ```
 
 Save and exit the configuration interface. Now compile & install busybox:
