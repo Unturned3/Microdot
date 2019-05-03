@@ -12,12 +12,17 @@ is and why is it useful before proceeding to build Microdot.
 
 The procedure to create a `cpio` archive is not very straight forward, but its
 easy to understand. If we want to put the content of the `$targetfs` directory
-into an initramfs, we run the following command:
+into an initramfs, we have to run the following command:
 
 ```bash
 cd $targetfs
 find . | cpio -H newc -o | gzip > /opt/initramfs.gz
 ```
+Note that `find` will complain that it got `Premission Denied` when trying to
+access the `./root` directory. This is normal, since the `./root` directory
+is owned by the `root` user, and we are currently a non-root user.
+
+This is how the command works:
 
 The `find .` command prints a list of files present in the current directory.
 Then the output of that gets piped into the input of `cpio`. It will then read
@@ -44,7 +49,18 @@ qemu-system-x86_64 \
 ```
 
 The mini system should boot, and you should be soon presented with a login
-prompt. Login with root (no password).
+prompt. Login with root (no password), and do whatever you like. Note that
+this tiny system has no presistent storage. That is, if you make any changes
+to the files and reboot the machine, all changes would be lost. This is
+because our root file system is an `initramfs`, which means that the content
+of it resides in `RAM`. Whatever modifications we make to the data in RAM
+will be lost if we can't write it to a non-volatile storage device.
+
+If you are done playing, you can `poweroff` the system. `QEMU`, however, will
+not terminate and return you to a terminal prompt, because our systems kernel
+has no support for the ACPI subsystem yet, so the kernel has no way of telling
+the hardware that the system is shutting down. We can open up a new terminal
+and safely kill `QEMU` with the following command:
 
 ```bash
 killall qemu-system-x86_64
