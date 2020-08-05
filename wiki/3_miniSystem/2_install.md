@@ -1,7 +1,8 @@
 # Installing Basic Software
 
 In this section we will install the essential system software programs into
-`$targetfs`, so the system can actually be used later.
+`$targetfs`. The `$targetfs` directory forms the skeleton of our system, and
+we will later "package" the contents into an image readable by the kernel.
 
 ## Clean Up the Source Directory
 
