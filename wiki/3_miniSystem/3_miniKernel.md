@@ -6,7 +6,7 @@ leave it to use the defaults, then a lot of unneeded subsystems and code
 will be added to the final product. How much space does this waste?
 An unmodified default configuration will generate a 8 to 10 megabyte kernel
 image. On the other hand, a nicely tuned manual config will keep the image
-under 2MB with plenty of functionality included.
+under 1MB with plenty of functionality included.
 
 Configuring the kernel basically boils down to selecting code that supports the
 various hardware devices that you want to use, and including features that will
@@ -17,7 +17,7 @@ Gentoo Wiki page in order to consolidate your understanding of the various
 concepts involved. It might have some Gentoo-specific terminologies that
 we won't use here.
 
-> Change directory into the unpacked linux-4.18.5 folder
+> Unpack & change directory into the linux-4.18.5 directory
 
 ```bash
 # clean up the source directory
@@ -80,7 +80,10 @@ You can navigate
 around using the arrow keys, ESC key, and return key. Every indentation in the
 recipe means that you need to enter a sub-menu to access the options. "Y" means
 that you need to select the corresponding option ("N" means deselect). Again,
-a hashtag ("#") indicates a comment.
+a hashtag ("#") indicates a comment. For each option, you can hit the "?" key to
+show a description/explanation (this is great for learning how things work).
+The descriptions sometimes will
+point you to more information in the Linux documentation.
 
 Configure the kernel according to the following recipe. As we said, this section
 focuses on constructing a bare minimum system, and you should notice that we
@@ -140,7 +143,7 @@ internet instructs you to do.
 ```bash
 make ARCH=$arch CROSS_COMPILE=$target- -jN
 
-# copy the image to /opt
+# copy the image to /opt (you probably need root permission for this)
 cp arch/x86/boot/bzImage /opt
 ```
 
