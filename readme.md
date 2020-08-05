@@ -5,19 +5,14 @@
 The Microdot Linux project will guide you through the process of
 creating a miniature but fully functional Linux system from the
 ground up, with special emphasis on toolchain creation and kernel
-configuration. The root file system (kernel + busybox + musl-libc) takes
-up only 1.5MB of space inside a compressed tarball, and it is bootable
-using Quick Emulator. You can tune the kernel to support more hardware
-and extend the functionality of the base system.
+configuration. The minimal kernel occupies 672KB, while the root file system
+(busybox, with a proper init system) occupies 808KB. Under the Quick Emulator
+(QEMU) with a single CPU core, the system boots in 0.6 seconds, with only
+32MB of RAM. You can tune the kernel & the
+userspace to support more hardware and extend the functionality of the base
+system.
 
-More software can be added to Microdot by compiling them from source. An
-experimental package manager named `Tiny Package Manager` is currently being
-developed. For more information, visit the 
-[tpkg](https://github.com/unturned3/tpkg)
-github repo.
-
-
-# Tutorial Overview
+# Overview
 
 - Section 1: prerequisites, background information, and build environment setup
 - Section 2: constructs a musl-based cross compilation toolchain
@@ -27,6 +22,11 @@ github repo.
 	porting Microdot to other architectures, installing other programs, etc.
 	This section will probably contain a lot of work contributed by other users.
 	For more details, see the `readme.md` file inside `wiki/4_beyond`.
+
+> Note: some of the sections can be skipped. If such conditions apply, it will
+> be made clear in the documentation. For example, you can choose to skip the
+> section about manually building a cross toolchain and use a prebuilt one
+> instead.
 
 
 # Getting Started
@@ -45,10 +45,10 @@ I started building Microdot purely out of curiosity (and building a Linux
 system from scratch does seem like a popular pastime for people). However, 
 along the way, I encountered many problems, such as:
 
-* How do I properly make a cross compilation toolchain?
-* How can I replace glibc with the smaller musl-libc?
-* How do I properly configure the Linux kernel and make it tiny?
-* How can I make the a Linux system as small as possible?
+* How can I replace glibc with the much smaller musl-libc?
+* How do I properly make a cross compilation toolchain using musl-libc?
+* How do I configure the Linux kernel and make it tiny?
+* What components are needed in a minimal root file system?
 
 There is suprisingly little documentation or tutorials on the internet
 about these topics. For any information that I did manage to find, they
@@ -58,7 +58,7 @@ and type commands without explaining why.
 
 "cross toolchain building" and "kernel configuration" were the nastiest
 out of all the problems I faced. There are literally thousands of
-switches and options that you can use to configure the packages, and
+options that you can use to configure the packages, and
 misusing one could cause the toolchain to fail or render the kernel
 unbootable. I partially used trail-and-error to figure things out (believe
 me, applying trail-and-error that on a process that takes hours to finish
@@ -82,8 +82,8 @@ Here are some projects that has some similar aspects to Microdot:
 
 	Teaches people how to manually assemble a working Linux system, but
 	uses _a lot_ of packages, employs a complicated process, and makes a
-	big system(200+ MB). Doesn't offer any details about how to configure
-	a kernel. 
+	big system (200+ MB). Doesn't offer much details on how to configure
+	a kernel.
 
 * Minimal Linux Live
 
@@ -91,14 +91,7 @@ Here are some projects that has some similar aspects to Microdot:
 	about the boot process and system internals, and the resulting system
 	is quite small (around 8MB). However, it doesn't use a customized
 	toolchain (makes the end system unnecessarily big), and it doesn't
-	explain how to configure a kernel. This makes it somewhat difficult for
-	the system to be extended and molded for other purposes.
-
-### What's wrong with articles/tutorials on the internet?
-
-Most of them are outdated, inconsistent, and perplexing. Having that said,
-there are still some good ones out there, and I will put links to these
-in the documentation whenever appropriate.
+	explain how to configure a kernel.
 
 ### What does "Microdot" mean?
 
@@ -122,13 +115,13 @@ outside the scope of Linux system building.
 
 ### What can Microdot Linux be used for?
 
-Microdot Linux is made to be modular and extendable,
-meaning that you can tailor it to your needs. Because 
-it comes with no bloat and has a small size, it can
-also be used as an embedded Linux system, where resources
+Microdot Linux is made to be extendable and you can tailor it to your
+needs. Because  it comes with no bloat and has a small size, it can
+be used as an embedded Linux system, where resources
 are constrained. For example, you can replace Rasbian with
 Microdot on a Raspberry Pi in order to save more memory
-and processing power for your applications. 
+and processing power for your applications. Tutorials on deploying Microdot
+onto actual hardware will be added soon.
 
 
 
