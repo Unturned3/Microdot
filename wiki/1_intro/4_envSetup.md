@@ -59,7 +59,7 @@ su - builder
 ```
 
 
-# Setup the Initialization Scripts for `Builder`
+# Setup the Initialization Scripts for Builder
 
 Every time a user logs in, a set of scripts are automatically executed
 to initialize the users command line environment (set up variables, etc).
