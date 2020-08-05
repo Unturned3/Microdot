@@ -29,7 +29,7 @@ other disks, starting a network connection, etc.
 5. The user can now interact with the system.
 
 On a conventional PC, this bootup process typically takes around 20 seconds
-to a minute. On the other hand, Microdot Linux can boot up within half a
+to a minute. On the other hand, Microdot Linux can boot up within a
 second, because its components are highly optimized for both speed and
 size. Since the system only has a handful of programs, it uses suprisingly
-little memory, and can boot with just 40MB of RAM.
+little memory, and can boot with as little as 32MB of RAM.
