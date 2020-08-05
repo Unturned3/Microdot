@@ -3,7 +3,7 @@
 
 Building a Linux system from the ground up is not an easy task, and
 it requires familiarity with the Linux command line. As a minimum,
-you should be able to do basic operations like these:
+you should be able to do basic operations such as:
 
 * copying/moving/renaming files
 * changing/listing directories
@@ -16,9 +16,9 @@ you should be able to do basic operations like these:
 A lot of jargon is used throughout the documentation. If there are terms or
 concepts that you don't know about, please consult Google and make sure
 that you understand them before moving on, or else you might get stuck later
-because you missed something out previously.
+because you missed something.
 
-Many people on the internet has already explained certain important
+Many resources on the internet has already explained certain important
 concepts that we will be working with; So instead of reinventing the wheel
 and rewriting what others have wrote, I will put links to them in the
 documentation.
@@ -59,6 +59,8 @@ these packages onto your host Linux system.
 * qemu (Quick Emulator, used to run and test Microdot Linux)
 * ncurses (a text-based menu interface for certain configuration scripts)
 * gawk (a text-processing language)
+* flex (for building the kernel)
+* bison (for building the kernel)
 
 
 
