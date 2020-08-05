@@ -1,5 +1,5 @@
 
-# Assembling the final system
+# Assembling & Running the Final System
 
 In this section, we will assemble the parts of our mini system and boot it
 via QEMU. First, we need to pack the contents of `$targetfs` into an `initramfs`
