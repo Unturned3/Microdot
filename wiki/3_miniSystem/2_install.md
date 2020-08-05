@@ -39,7 +39,7 @@ cd build
 	--disable-nls \
 	--disable-libmpx \
 	--disable-libsanitizer \
-	--disable-mudflap \
+	--disable-libmudflap \
 	--enable-c99 \
 	--enable-long-long \
 	--enable-tls \
