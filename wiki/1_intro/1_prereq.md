@@ -61,6 +61,13 @@ these packages onto your host Linux system.
 * gawk (a text-processing language)
 * flex (for building the kernel)
 * bison (for building the kernel)
+* rsync (for building the kernel)
+
+> Note: the list above might not be exhaustive. If you run into errors in the form
+> of "command not found" or similar, you might be missing a package. These errors
+> are usually easily fixed by "apt install ..." (or whatever package manager you're using).
+> Feel free to report these issues so I can update the docs accordinly.
+
 
 
 
