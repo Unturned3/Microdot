@@ -18,6 +18,8 @@ rm -rf binutils-2.30 gcc-7.3.0 linux-4.18.5 musl-1.1.20
 Install the `libgcc` support library, so other dynamic binaries compiled by
 `gcc` can actually run on our final system.
 
+> Note: libgcc is a part of the gcc-7.3.0 package. Unpack and change directory into gcc-7.3.0
+
 ```bash
 tar -xf ../mpfr*
 tar -xf ../mpc*
@@ -52,10 +54,37 @@ $target-strip $targetfs/lib/libgcc_s.so.1
 rm -r $targetfs/lib/gcc
 ```
 
+# static vs dynamic system
+
+You can either build a statically linked userspace or a dynamically linked one.
+"Dynamically linked" refers to the situation where the programs in the userspace
+all depend on some shared library (such as musl-libc). In this case, musl-libc needs
+to be present in the final Microdot system, or else programs such as Busybox won't run.
+"Statically linked" refers to the situation where the portion of the shared library is
+directly copied into the program that you are compiling. For example, if we compile
+Busybox as statically linked, it will copy a portion of musl-libc into the finished
+Busybox binary, making it sort of "self-contained" in the sense that we don't need
+musl-libc to be present on the final Microdot system.
+
+An obvious downside to statically linking every userspace program is that there will 
+be many redundant copies of the same code in every program. Dynamic linking reduces
+the redundant space waste by packing the code that every program uses in a shared library.
+
+For more information on this topic, visit [link1](https://stackoverflow.com/questions/1993390/static-linking-vs-dynamic-linking) and 
+[link2](https://cs-fundamentals.com/tech-interview/c/difference-between-static-and-dynamic-linking).
+
+However, for our system, we only have 1 binary, which is Busybox. Statically linking
+Busybox in this case will result in an overall smaller root file system, but dynamic
+linking (and installing musl-libc) will make expanding the system & adding more software
+easier. You can choose either option here.
+
 # musl-libc
 
 Install musl-libc onto the target system, so dynamically linked binaries can
-run.
+run. If you are building a statically-linked system with no shared libs, skip
+this step and continue from the busybox section below.
+
+> Note: unpack and change directory into the musl-1.1.20 directory
 
 ```bash
 ./configure \
@@ -74,10 +103,11 @@ Busybox is the main component of Microdot's userspace. It contains hundreds of
 Linux utilities combined into one tiny executable. Linking it with `musl-libc`
 results in an even smaller binary compared to other libraries.
 
+> Note: unpack and change directory into the busybox-1.30.0 directory
+
 ```bash
 make distclean
 make ARCH=$arch defconfig
-
 ```
 
 Now, run the following command to launch the "menuconfig" interface. We need to
@@ -99,6 +129,11 @@ Settings --->
 	Don't use /usr: Y
 Init Utilities --->
 	linuxrc: support running init from initrd (not initramfs): N
+
+# If you are building a statically-linked busybox, select the following as well:
+
+Settings --->
+	Build static binary (no shared libs): Y
 ```
 
 Save and exit the configuration interface. Now compile & install busybox:
