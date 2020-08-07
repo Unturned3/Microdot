@@ -6,7 +6,7 @@ The Microdot Linux project will guide you through the process of
 creating a miniature but fully functional Linux system from the
 ground up, with special emphasis on toolchain creation and kernel
 configuration. The minimal kernel occupies 672KB of space, while the root file
-system (busybox, with a proper init system) occupies 808KB. 
+system (busybox, with a proper init system) occupies 432KB. 
 Under the Quick Emulator
 (QEMU) with a single CPU core, the system boots in 0.6 seconds, with only
 32MB of RAM. You can tune the kernel & the
