@@ -15,6 +15,8 @@ Under the Quick Emulator
 userspace to support more hardware and extend the functionality of the base
 system.
 
+> You can download the demo shown above [here](/demo).
+
 # Overview
 
 - Section 1: prerequisites, background information, and build environment setup
