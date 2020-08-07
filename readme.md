@@ -112,8 +112,9 @@ The Microdot Project is primarily intended for people who
 is interested in constructing a custom Linux system (it seems
 like that this is quite a popular activity for Linux users).
 However, besides that, the Microdot Project also provides
-useful information on cross compilation, which could be useful
-outside the scope of Linux system building.
+useful information on topics such as cross compilation, kernel
+configuration, userspace building, etc. which could be useful
+outside the scope of Microdot.
 
 
 ### What can Microdot Linux be used for?
