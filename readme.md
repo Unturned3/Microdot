@@ -2,6 +2,8 @@
 
 # Microdot Linux
 
+[![asciicast](https://asciinema.org/a/yQg6d0Wm1WJyCeyak8RQisxC0.svg)](https://asciinema.org/a/yQg6d0Wm1WJyCeyak8RQisxC0)
+
 The Microdot Linux project will guide you through the process of
 creating a miniature but fully functional Linux system from the
 ground up, with special emphasis on toolchain creation and kernel
