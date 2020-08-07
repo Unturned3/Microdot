@@ -1,8 +1,8 @@
 
-# Microdot Linux Demo
+# Microdot Linux
 
-* demo\_qemu.tar: Microdot demo running inside QEMU. Unpack the tarball and follow the
+* demo\_qemu.tar: Microdot running inside QEMU. Unpack the tarball and follow the
 instructions inside.
 
-* vbox\_demo.img: Microdot demo (w/ bootloader) for Oracle VirtualBox (not implemented yet)
+* vbox\_demo.img: Microdot (w/ bootloader) for Oracle VirtualBox (not implemented yet)
 
