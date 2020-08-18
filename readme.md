@@ -1,4 +1,4 @@
-
+> Coming soon: deploying Microdot on Allwinner F1C100s-based systems!
 
 # Microdot Linux
 
