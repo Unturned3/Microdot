@@ -183,6 +183,7 @@ source folder of `gcc`:
 tar -xf ../mpfr*
 tar -xf ../mpc*
 tar -xf ../gmp*
+tar -xf ../isl*
 ```
 
 Then we have to "clean up" the names by leaving just the letters and
@@ -193,6 +194,7 @@ removing the version number. For example, we will rename `mpfr-4.0.1` as
 mv mpfr* mpfr
 mv mpc* mpc
 mv gmp* gmp
+mv isl* isl
 ```
 
 `gcc` build system will automatically detect the presence of these
