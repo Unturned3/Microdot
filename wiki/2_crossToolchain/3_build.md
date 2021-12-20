@@ -183,8 +183,13 @@ source folder of `gcc`:
 tar -xf ../mpfr*
 tar -xf ../mpc*
 tar -xf ../gmp*
-tar -xf ../isl*
+tar -xf ../isl*    # For more information about ISL, see Note below
 ```
+
+> Note: previously it was thought that the ISL package is unnecessary. However, some users
+> have reported `gcc` build errors due to missing the ISL package. The exact reason
+> is unclear as of now. For more information, see [#27](https://github.com/Unturned3/Microdot/issues/27)
+> and [#29](https://github.com/Unturned3/Microdot/pull/29).
 
 Then we have to "clean up" the names by leaving just the letters and
 removing the version number. For example, we will rename `mpfr-4.0.1` as
