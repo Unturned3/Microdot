@@ -13,6 +13,7 @@ these files and store them inside the /opt/cross/src directory.
 * [gcc-7.3.0.tar.gz](https://ftp.gnu.org/gnu/gcc/gcc-7.3.0//gcc-7.3.0.tar.gz)
 * [musl-1.1.20.tar.gz](http://git.musl-libc.org/cgit/musl/snapshot/musl-1.1.20.tar.gz)
 * [busybox-1.30.0.tar.bz2](https://busybox.net/downloads/busybox-1.30.0.tar.bz2)
+* [isl-0.24.tar.xz](http://isl.gforge.inria.fr/isl-0.24.tar.xz)
 
 Alternatively, you can find a mirror site that is closer to your geographical location
 and download the packages there, instead of using the links given above.
